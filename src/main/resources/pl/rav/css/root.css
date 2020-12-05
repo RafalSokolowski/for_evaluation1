@@ -1,0 +1,60 @@
+BorderPane {
+    -fx-cursor: open_hand;
+    -fx-background-color: #111111;
+    -fx-font: 20px Tohoma;
+    -fx-font-weight: bold;
+}
+
+.top {
+    -fx-alignment: center;
+    -fx-pref-height: 60px;
+}
+.center {
+    -fx-cursor: hand;
+    -fx-background-color: #333333;
+}
+
+.bottom {
+    -fx-alignment: center;
+    -fx-pref-height: 60px;
+}
+
+.right {
+    -fx-pref-width: 150px;
+}
+
+.left {
+    -fx-pref-width: 150px;
+}
+
+
+
+
+Label {
+    -fx-text-fill: white;
+    -fx-padding: 20px;
+    -fx-spacing: 20px;
+}
+
+.fight{
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    /*-fx-background-color: #333333;*/
+    /*-fx-text-fill: white;*/
+
+}
+.fight:hover {
+      -fx-cursor: hand;
+    -fx-scale-x: 1.4;
+    -fx-scale-y: 1.4;
+  }
+.fight:pressed {
+    -fx-effect: dropshadow(gaussian, black, 5, 0.1, 0, 0);
+    -fx-scale-x: 0.9;
+    -fx-scale-y: 0.9;
+}
+
+
+/*-fx-border-color: grey;*/
+/*-fx-border-width: 0 0 1px 0;*/
+/*-fx-border-style: dashed;*/

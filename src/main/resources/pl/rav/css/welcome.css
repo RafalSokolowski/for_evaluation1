@@ -1,0 +1,64 @@
+GridPane {
+    -fx-font: 20px Tohoma;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-background-color: black;
+    /*-fx-background-image: url("../graphics/background/background01.png");*/
+    -fx-background-position: center center;
+    -fx-background-repeat: stretch;
+    /*-fx-background-opacity-image: 50%;*/
+    -fx-opacity: 0.9;
+}
+
+HBox {
+    -fx-alignment: center;
+}
+VBox {
+    -fx-alignment: center;
+}
+
+
+
+Label {
+    -fx-text-fill: white;
+    -fx-padding: 20px;
+    -fx-spacing: 20px;
+}
+
+
+.race {
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-alignment: center;
+    -fx-spacing: 20px;
+    -fx-content-display: top;
+}
+.race:hover {
+    -fx-cursor: hand;
+    -fx-scale-x: 1.3;
+    -fx-scale-y: 1.3;
+}
+.race:pressed {
+    -fx-effect: dropshadow(gaussian, black, 5, 0.1, 0, 0);
+    -fx-scale-x: 0.9;
+    -fx-scale-y: 0.9;
+}
+
+.avatar {
+    /*-fx-content-display: center;*/
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-alignment: center;
+    -fx-spacing: 10px;
+    -fx-content-display: left;
+}
+.avatar:hover {
+    -fx-cursor: hand;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+.avatar:pressed {
+    -fx-effect: dropshadow(gaussian, black, 5, 0.1, 0, 0);
+    -fx-scale-x: 0.9;
+    -fx-scale-y: 0.9;
+}
