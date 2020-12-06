@@ -16,11 +16,13 @@ import static pl.rav.util.Const.*;
 public class Game extends Application {
 
     private static Scene scene;
+    public static Player playerGlobalFirst;
+    public static Player playerGlobalSecond;
 
     @Override
     public void start(Stage stage) throws IOException {
         scene = new Scene(loadFXML("welcome"), WELCOME_WIDTH, WELCOME_HEIGHT);
-        stage.setTitle("mini strategy game");
+        stage.setTitle("simple mini strategy game");
         stage.setScene(scene);
 //        stage.setResizable(false);
         stage.show();

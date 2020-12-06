@@ -24,7 +24,7 @@ BorderPane {
 }
 
 .left {
-    -fx-pref-width: 150px;
+    -fx-pref-width: 170px;
 }
 
 
@@ -32,8 +32,27 @@ BorderPane {
 
 Label {
     -fx-text-fill: white;
-    -fx-padding: 20px;
-    -fx-spacing: 20px;
+    -fx-padding: 15px;
+    -fx-spacing: 15px;
+}
+
+.player {
+    -fx-font: 15px Tohoma;
+
+}
+.playerColorBlue {
+    -fx-font: 15px Tohoma;
+    -fx-text-fill: BLUE;
+    -fx-font-weight: bold;
+}
+.playerColorRed {
+    -fx-font: 15px Tohoma;
+    -fx-text-fill: RED;
+    -fx-font-weight: bold;
+}
+
+#avatar {
+    -fx-alignment: CENTER;
 }
 
 .fight{

@@ -1,56 +1,79 @@
 package pl.rav.control;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import lombok.AllArgsConstructor;
-import lombok.SneakyThrows;
 import pl.rav.Game;
 import pl.rav.game.Player;
-import pl.rav.game.PlayerHolder;
-import pl.rav.util.Avatar;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import static pl.rav.util.Const.*;
 
-public class RootController {
-
-    private Player player;
+public class RootController implements Initializable {
 
     @FXML
-    private Label nick;
+    private Label playerVsPlayer;
     @FXML
-    private ImageView avatar;
-
-//    public RootController(Player player) {
-//        this.player = player;
-//    }
-
+    private Label nickLeft, raceLeft, scoreLeft;
     @FXML
-    private void initialize() {
+    private Label nickRight, raceRight, scoreRight;
+    @FXML
+    private ImageView avatarLeft, avatarRight;
 
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        setPlayerVsPlayer();
+
+        setAvatarLeft(avatarLeft, Game.playerGlobalFirst);
+        setNick(nickLeft, Game.playerGlobalFirst);
+        setRace(raceLeft, Game.playerGlobalFirst);
+        setScore(scoreLeft, Game.playerGlobalFirst, "0");
+
+        setAvatarLeft(avatarRight, Game.playerGlobalSecond);
+        setNick(nickRight, Game.playerGlobalSecond);
+        setRace(raceRight, Game.playerGlobalSecond);
+        setScore(scoreRight, Game.playerGlobalSecond, "0");
     }
 
-    @SneakyThrows
     public void goToTheBattle() {
-        PlayerHolder playerHolder = PlayerHolder.getInstance();
-        Player player = playerHolder.getPlayer();
-
-        nick.setText(player.getNick());
-
-//        InputStream stream = new FileInputStream("C:\\DATA\\!!!_!_DATA_201903\\Coding\\C_School\\POOL\\for_evaluation1\\src\\main\\resources\\pl\\rav\\graphics\\avatars\\humans\\humanAvatar01.png");
-//        InputStream stream = new FileInputStream("src\\main\\resources\\pl\\rav\\graphics\\avatars\\humans\\humanAvatar01.png");
-        InputStream stream = new FileInputStream(player.getAvatar().getPath());
-        Image image = new Image(stream);
-
-        avatar.setImage(image);
-        avatar.setVisible(true);
-        avatar.setPreserveRatio(true);
-        avatar.setFitHeight(AVATAR_HEIGHT);
 
     }
+
+    private void setPlayerVsPlayer () {
+        playerVsPlayer.setText(Game.playerGlobalFirst.getNick() + " Vs. " + Game.playerGlobalSecond.getNick());
+    }
+
+    private void setNick(Label where, Player player) {
+        where.setText(player.getNick());
+    }
+
+    private void setAvatarLeft(ImageView where, Player player) {
+        try (InputStream inputStream = new FileInputStream(player.getAvatar().getPath())) {
+            Image image = new Image(inputStream);
+            where.setImage(image);
+            where.setVisible(true);
+            where.setPreserveRatio(true);
+            where.setFitHeight(AVATAR_HEIGHT);
+        } catch (IOException e) {
+            System.err.println("Cannot load image exception (Class RootController): " + e.getMessage());
+        }
+    }
+
+    private void setRace (Label where, Player player) {
+        where.setText(player.getRace().get());
+    }
+
+    private void setScore(Label where, Player player, String points) {
+        where.setText(points);
+    }
+
 
 }

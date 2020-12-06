@@ -17,7 +17,7 @@
 
     <top>
         <HBox styleClass="top">
-            <Label text="Avatar Vs. Avatar"/>
+            <Label fx:id="playerVsPlayer"/>
             <Label text="Turn no: "/>
             <Label text="Game time: "/>
             <Label text="Save"/>
@@ -25,23 +25,66 @@
         </HBox>
     </top>
 
+
     <left>
-        <VBox styleClass="left" alignment="CENTER">
-            <ImageView fx:id="avatar"/>
-            <Label fx:id="nick" text="Name: "/>
-            <Label text="Race: "/>
-            <Label text="Color: "/>
-            <Label text="Points: "/>
+        <VBox>
+            <VBox styleClass="left" alignment="TOP_CENTER">
+                <ImageView fx:id="avatarLeft"/>
+            </VBox>
+            <!-- TODO: zrobić tabelę zamiast HBox / VBox -->
+            <VBox styleClass="left">
+                <HBox>
+                    <Label styleClass="player" text="Nick :"/>
+                    <Label styleClass="player" fx:id="nickLeft"/>
+                </HBox>
+                <HBox>
+                    <Label styleClass="player" text="Race :"/>
+                    <Label styleClass="player" fx:id="raceLeft"/>
+                </HBox>
+                <HBox>
+                    <Label styleClass="player" text="Color :"/>
+                    <Label styleClass="playerColorBlue" text="BLUE"/>
+                </HBox>
+                <HBox>
+                    <Label styleClass="player" text="Score :"/>
+                    <Label styleClass="player" fx:id="scoreLeft"/>
+                </HBox>
+            </VBox>
         </VBox>
     </left>
 
+
     <right>
-        <VBox styleClass="right">
-            <Label text="AVATAR"/>
-            <Label text="Name: "/>
-            <Label text="Race: "/>
-            <Label text="Color: "/>
-            <Label text="Points: "/>
+<!--        <VBox styleClass="right">-->
+<!--            <Label text="AVATAR"/>-->
+<!--            <Label text="Name: "/>-->
+<!--            <Label text="Race: "/>-->
+<!--            <Label text="Color: "/>-->
+<!--            <Label text="Points: "/>-->
+<!--        </VBox>-->
+        <VBox>
+            <VBox styleClass="left" alignment="TOP_CENTER">
+                <ImageView fx:id="avatarRight"/>
+            </VBox>
+            <!-- TODO: zrobić tabelę zamiast HBox / VBox -->
+            <VBox styleClass="left">
+                <HBox>
+                    <Label styleClass="player" text="Nick :"/>
+                    <Label styleClass="player" fx:id="nickRight"/>
+                </HBox>
+                <HBox>
+                    <Label styleClass="player" text="Race :"/>
+                    <Label styleClass="player" fx:id="raceRight"/>
+                </HBox>
+                <HBox>
+                    <Label styleClass="player" text="Color :"/>
+                    <Label styleClass="playerColorRed" text="RED"/>
+                </HBox>
+                <HBox>
+                    <Label styleClass="player" text="Score :"/>
+                    <Label styleClass="player" fx:id="scoreRight"/>
+                </HBox>
+            </VBox>
         </VBox>
     </right>
 

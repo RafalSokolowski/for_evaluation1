@@ -17,7 +17,7 @@
 
     <HBox GridPane.rowIndex="1">
         <Label text="Provide your nick: "/>
-        <TextField fx:id="nick" prefWidth="150"/>
+        <TextField fx:id="nick"/>
     </HBox>
 
     <VBox GridPane.rowIndex="2">

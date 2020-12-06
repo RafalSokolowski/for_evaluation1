@@ -7,13 +7,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import pl.rav.Game;
 import pl.rav.game.Player;
-import pl.rav.game.PlayerHolder;
 import pl.rav.util.Avatar;
 import pl.rav.util.Race;
 
 import java.io.IOException;
 
 import static pl.rav.util.Const.*;
+import static pl.rav.util.Const.WELCOME_HEIGHT;
 
 public class WelcomeController {
 
@@ -28,8 +28,6 @@ public class WelcomeController {
 
     private Race playerRace;
     private String avatarButtonPressed;
-
-    private Player player;
 
     public void raceSelected(ActionEvent actionEvent) {
         if (actionEvent.getSource().equals(monster)) {
@@ -51,23 +49,28 @@ public class WelcomeController {
     }
 
     public void moveFurther() throws IOException {
-        String playerNick = nick.getText();
-        String playerAvatar = generateAvatarNameFromString(avatarButtonPressed);
+        String playerNick;
+        String playerAvatar;
 
-        Player player = new Player(playerNick, playerRace, Avatar.valueOf(playerAvatar));
-        Game.setRoot("root",MAIN_APP_WIDTH, MAIN_APP_HEIGHT);
+        if (Game.playerGlobalSecond == null) {
+            Game.setRoot("welcome",WELCOME_WIDTH, WELCOME_HEIGHT);
+            playerNick = nick.getText();
+            playerAvatar = generateAvatarNameFromString(avatarButtonPressed);
+            Game.playerGlobalSecond = new Player(playerNick, playerRace, Avatar.valueOf(playerAvatar));
+        } else {
+            playerNick = nick.getText();
+            playerAvatar = generateAvatarNameFromString(avatarButtonPressed);
+            Game.playerGlobalFirst = new Player(playerNick, playerRace, Avatar.valueOf(playerAvatar));
 
-        PlayerHolder playerHolder = PlayerHolder.getInstance();
-        playerHolder.setPlayer(player);
+            Game.setRoot("root", MAIN_APP_WIDTH, MAIN_APP_HEIGHT);
+        }
 
-        System.out.println("WelcomeController: " + player);
-        System.out.println("WelcomeController (holder): " + playerHolder);
-
+        System.out.println("First: " + Game.playerGlobalFirst);
+        System.out.println("Second: " + Game.playerGlobalSecond);
     }
 
     private String generateAvatarNameFromString(String string) {
         return string.split("\'")[1].replaceAll(" ", "_").toUpperCase();
     }
-
 
 }
