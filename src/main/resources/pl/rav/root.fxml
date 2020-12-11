@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import pl.rav.util.Const?>
+
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Button?>
@@ -10,13 +12,20 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
+<?import javafx.scene.layout.Pane?>
+
 <BorderPane fx:id="root"
             fx:controller="pl.rav.control.RootController"
             xmlns:fx="http://javafx.com/fxml"
             stylesheets="@css/root.css">
 
+    <fx:define>
+        <Const fx:id="menuLeftRightSize" fx:constant="MENU_LEFT_RIGHT_SIZE"/>
+        <Const fx:id="battlefieldStartY" fx:constant="BATTLEFIELD_START_Y"/>
+    </fx:define>
+
     <top>
-        <HBox styleClass="top">
+        <HBox styleClass="top" minHeight="$battlefieldStartY">
             <Label fx:id="playerVsPlayer"/>
             <Label text="Turn no: "/>
             <Label text="Game time: "/>
@@ -27,7 +36,7 @@
 
 
     <left>
-        <VBox>
+        <VBox prefWidth="$menuLeftRightSize">
             <VBox styleClass="left" alignment="TOP_CENTER">
                 <ImageView fx:id="avatarLeft"/>
             </VBox>
@@ -62,7 +71,7 @@
 <!--            <Label text="Color: "/>-->
 <!--            <Label text="Points: "/>-->
 <!--        </VBox>-->
-        <VBox>
+        <VBox prefWidth="$menuLeftRightSize">
             <VBox styleClass="left" alignment="TOP_CENTER">
                 <ImageView fx:id="avatarRight"/>
             </VBox>
@@ -89,13 +98,13 @@
     </right>
 
     <bottom>
-        <HBox styleClass="bottom">
+        <HBox styleClass="bottom" minHeight="$battlefieldStartY">
             <Label text="START"/>
             <!--    <Button fx:id="fight" styleClass="fight" prefWidth="30" onAction="#selectNewFile">-->
             <Button styleClass="fight" onAction="#goToTheBattle">
                 <graphic>
                     <ImageView>
-                        <Image url="@graphics/buttons/fight_axe.png" preserveRatio="true" requestedHeight="40"/>
+                        <Image url="@graphics/buttons/fight_axe.png" preserveRatio="true" requestedHeight="30"/>
                     </ImageView>
                 </graphic>
             </Button>
@@ -105,7 +114,7 @@
 
 
     <center>
-        <GridPane styleClass="center">
+        <GridPane fx:id="battlefield" styleClass="center">
 
         </GridPane>
     </center>

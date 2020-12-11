@@ -7,6 +7,7 @@ module pl.rav {
 
 
     opens pl.rav.control to javafx.fxml;
+    opens pl.rav.util to javafx.fxml;
     exports pl.rav;
 
 }
