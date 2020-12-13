@@ -21,11 +21,11 @@
 
     <fx:define>
         <Const fx:id="menuLeftRightSize" fx:constant="MENU_LEFT_RIGHT_SIZE"/>
-        <Const fx:id="battlefieldStartY" fx:constant="BATTLEFIELD_START_Y"/>
+        <Const fx:id="menuTopSize" fx:constant="MENU_TOP_SIZE"/>
     </fx:define>
 
     <top>
-        <HBox styleClass="top" minHeight="$battlefieldStartY">
+        <HBox styleClass="top" minHeight="$menuTopSize">
             <Label fx:id="playerVsPlayer"/>
             <Label text="Turn no: "/>
             <Label text="Game time: "/>
@@ -36,7 +36,7 @@
 
 
     <left>
-        <VBox prefWidth="$menuLeftRightSize">
+        <VBox prefWidth="$menuLeftRightSize" maxHeight="$menuLeftRightSize">
             <VBox styleClass="left" alignment="TOP_CENTER">
                 <ImageView fx:id="avatarLeft"/>
             </VBox>
@@ -98,7 +98,7 @@
     </right>
 
     <bottom>
-        <HBox styleClass="bottom" minHeight="$battlefieldStartY">
+        <HBox styleClass="bottom" minHeight="$menuTopSize">
             <Label text="START"/>
             <!--    <Button fx:id="fight" styleClass="fight" prefWidth="30" onAction="#selectNewFile">-->
             <Button styleClass="fight" onAction="#goToTheBattle">

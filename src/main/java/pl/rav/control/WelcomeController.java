@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import pl.rav.Game;
 import pl.rav.game.Player;
 import pl.rav.util.Avatar;
@@ -58,6 +57,7 @@ public class WelcomeController {
             playerAvatar = generateAvatarNameFromString(avatarButtonPressed);
             Game.playerGlobalFirst = new Player(playerNick, playerRace, Avatar.valueOf(playerAvatar));
             Game.setRoot("welcome",WELCOME_WIDTH+15, WELCOME_HEIGHT+35);    // TODO: nie wiem dlaczego musze przesunąć o te współrzędne ręcznie (?)
+//            Game.setRoot("welcome",WELCOME_WIDTH, WELCOME_HEIGHT);
 
         } else if (Game.playerGlobalSecond == null) {
             playerNick = nick.getText();
