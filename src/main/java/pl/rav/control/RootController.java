@@ -127,8 +127,8 @@ public class RootController implements Initializable {
         System.out.println("y: " + playerFirst.getY());
         System.out.println("height: " + playerFirst.getFitHeight());
         System.out.println("width:  " + playerFirst.getFitWidth());
-        System.out.println("BATTLEFIELD_END_X:  " + BATTLEFIELD_END_X);
-        System.out.println("BATTLEFIELD_END_y:  " + BATTLEFIELD_END_Y);
+        System.out.println("BATTLEFIELD_START_Y:  " + BATTLEFIELD_START_Y);
+        System.out.println("BATTLEFIELD_END_Y:  " + BATTLEFIELD_END_Y);
     }
 
     private ImageView placedWarriorOnTheBattlefield(String avatarPath, int startX, int startY) {
@@ -153,7 +153,13 @@ public class RootController implements Initializable {
 
     }
 
-    private EventHandler<KeyEvent> warriorsMovement(ImageView player, KeyCode moveUp, KeyCode moveDown, KeyCode moveLeft, KeyCode moveRight) {
+    private EventHandler<KeyEvent> warriorsMovement(
+            ImageView player,
+            KeyCode moveUp,
+            KeyCode moveDown,
+            KeyCode moveLeft,
+            KeyCode moveRight
+    ) {
 
         EventHandler<KeyEvent> keyPressListener = keyEvent -> {
             if (keyEvent.getCode() == moveUp) {

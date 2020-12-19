@@ -22,6 +22,8 @@
     <fx:define>
         <Const fx:id="menuLeftRightSize" fx:constant="MENU_LEFT_RIGHT_SIZE"/>
         <Const fx:id="menuTopSize" fx:constant="MENU_TOP_SIZE"/>
+        <Const fx:id="battlefieldHeight" fx:constant="BATTLEFIELD_HEIGHT"/>
+        <Const fx:id="battlefieldWidth" fx:constant="BATTLEFIELD_WIDTH"/>
     </fx:define>
 
     <top>
@@ -62,16 +64,16 @@
         </VBox>
     </left>
 
+    <center>
+        <GridPane fx:id="battlefield" styleClass="center"
+                  prefHeight="$battlefieldHeight" prefWidth="$battlefieldWidth">
+
+
+        </GridPane>
+    </center>
 
     <right>
-<!--        <VBox styleClass="right">-->
-<!--            <Label text="AVATAR"/>-->
-<!--            <Label text="Name: "/>-->
-<!--            <Label text="Race: "/>-->
-<!--            <Label text="Color: "/>-->
-<!--            <Label text="Points: "/>-->
-<!--        </VBox>-->
-        <VBox prefWidth="$menuLeftRightSize">
+        <VBox minWidth="$menuLeftRightSize">
             <VBox styleClass="left" alignment="TOP_CENTER">
                 <ImageView fx:id="avatarRight"/>
             </VBox>
@@ -98,7 +100,8 @@
     </right>
 
     <bottom>
-        <HBox styleClass="bottom" minHeight="$menuTopSize">
+<!--        <HBox styleClass="bottom" minHeight="$menuTopSize">-->
+        <HBox styleClass="bottom">
             <Label text="START"/>
             <!--    <Button fx:id="fight" styleClass="fight" prefWidth="30" onAction="#selectNewFile">-->
             <Button styleClass="fight" onAction="#goToTheBattle">
@@ -111,14 +114,6 @@
             <Label text="BATTLE"/>
         </HBox>
     </bottom>
-
-
-    <center>
-        <GridPane fx:id="battlefield" styleClass="center">
-
-        </GridPane>
-    </center>
-
 
 </BorderPane>
 

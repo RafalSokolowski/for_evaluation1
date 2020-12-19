@@ -11,7 +11,7 @@ BorderPane {
 }
 .center {
     -fx-cursor: hand;
-    -fx-background-color: #333333;
+    -fx-background-color: #888888;
 }
 
 .bottom {
