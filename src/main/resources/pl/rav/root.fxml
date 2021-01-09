@@ -57,6 +57,10 @@
                     <Label styleClass="playerColorBlue" text="BLUE"/>
                 </HBox>
                 <HBox>
+                    <Label styleClass="player" text="Moves :"/>
+                    <Label styleClass="player" fx:id="leftMoves"/>
+                </HBox>
+                <HBox>
                     <Label styleClass="player" text="Score :"/>
                     <Label styleClass="player" fx:id="scoreLeft"/>
                 </HBox>
@@ -90,6 +94,10 @@
                 <HBox>
                     <Label styleClass="player" text="Color :"/>
                     <Label styleClass="playerColorRed" text="RED"/>
+                </HBox>
+                <HBox>
+                    <Label styleClass="player" text="Moves :"/>
+                    <Label styleClass="player" fx:id="rightMoves"/>
                 </HBox>
                 <HBox>
                     <Label styleClass="player" text="Score :"/>
