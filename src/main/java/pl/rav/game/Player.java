@@ -8,7 +8,7 @@ import lombok.ToString;
 import pl.rav.util.Avatar;
 import pl.rav.util.Race;
 
-import static pl.rav.util.Const.START_HEALTH;
+import static pl.rav.util.Const.INITIAL_HEALTH;
 
 @Getter
 @EqualsAndHashCode
@@ -32,7 +32,7 @@ public class Player {
         this.avatar = avatar;
 
         this.onTheBattlefield = null;
-        this.health = START_HEALTH;
+        this.health = INITIAL_HEALTH;
         this.wins = 0;
         this.loses = 0;
 
@@ -49,6 +49,15 @@ public class Player {
 
     public void increaseLoses() {
         loses++;
+    }
+
+    public void resetHealth() {
+        health = INITIAL_HEALTH;
+    }
+
+    public void setWinsAndLosesBetweenControllers(int wins, int loses) {
+        this.wins = wins;
+        this.loses = loses;
     }
 
     public boolean isDeath() {

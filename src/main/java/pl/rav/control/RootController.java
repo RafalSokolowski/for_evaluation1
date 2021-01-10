@@ -3,8 +3,10 @@ package pl.rav.control;
 import javafx.animation.*;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,6 +20,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import pl.rav.Game;
 import pl.rav.game.Player;
@@ -33,6 +36,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static pl.rav.Game.scene;
 import static pl.rav.util.Const.*;
 
 public class RootController implements Initializable {
@@ -66,6 +70,9 @@ public class RootController implements Initializable {
 
     Graphics graphics;
 
+    private Stage endStage;
+    private Stage currentStage;
+
     private List<ImageView> rocketsFirstPlayer;
 
     // SETUP - adding players parameters on LEFT and RIGHT and info on TOP
@@ -75,26 +82,26 @@ public class RootController implements Initializable {
 
 // TODO: !!! - wyłączone na czas setup battlefield - !!!!
 
-//        setPlayerVsPlayer();
-//
-//        setAvatarLeft(avatarLeft, Game.playerGlobalFirst);
-//        setNick(nickLeft, Game.playerGlobalFirst);
-//        setRace(raceLeft, Game.playerGlobalFirst);
-//        setScore(scoreLeft, Game.playerGlobalFirst, INITIAL_POINTS);
-//        setMoves(leftMoves, "0");
-//
-//        setAvatarLeft(avatarRight, Game.playerGlobalSecond);
-//        setNick(nickRight, Game.playerGlobalSecond);
-//        setRace(raceRight, Game.playerGlobalSecond);
-//        setScore(scoreRight, Game.playerGlobalSecond, INITIAL_POINTS);
-//        setMoves(rightMoves, "0");
+        setPlayerVsPlayer();
+
+        setAvatarLeft(avatarLeft, Game.playerGlobalFirst);
+        setNick(nickLeft, Game.playerGlobalFirst);
+        setRace(raceLeft, Game.playerGlobalFirst);
+        setScore(scoreLeft, Game.playerGlobalFirst, INITIAL_POINTS);
+        setMoves(leftMoves, "0");
+
+        setAvatarLeft(avatarRight, Game.playerGlobalSecond);
+        setNick(nickRight, Game.playerGlobalSecond);
+        setRace(raceRight, Game.playerGlobalSecond);
+        setScore(scoreRight, Game.playerGlobalSecond, INITIAL_POINTS);
+        setMoves(rightMoves, "0");
 
 // TODO: !!! - wyłączone na czas setup battlefield - !!!!
 
         graphics = new Graphics();
 
-        Game.playerGlobalFirst = new Player("Ksawery", Race.HUMANS, Avatar.HEAVY_GUY);        // TODO: !!! - wyłączone TYLKO na czas setup battlefield - !!!!
-        Game.playerGlobalSecond = new Player("Rafal", Race.MONSTERS, Avatar.MEDIUM_MONSTER);  // TODO: !!! - wyłączone TYLKO na czas setup battlefield - !!!!
+//        Game.playerGlobalFirst = new Player("Ksawery", Race.HUMANS, Avatar.HEAVY_GUY);        // TODO: !!! - wyłączone TYLKO na czas setup battlefield - !!!!
+//        Game.playerGlobalSecond = new Player("Rafal", Race.MONSTERS, Avatar.MEDIUM_MONSTER);  // TODO: !!! - wyłączone TYLKO na czas setup battlefield - !!!!
 
         ImageView imageViewPlayerFirst = placedWarriorOnTheBattlefield(
                 Game.playerGlobalFirst.getAvatar().getPath(),
@@ -113,7 +120,7 @@ public class RootController implements Initializable {
 
         ImageView bulletFirst = graphics.createGraphicsFromPath(BULLET_PATH, BULLET_WIDTH);
         eventHandlerFirstMove = warriorsMovement(Game.playerGlobalFirst, KeyCode.W, KeyCode.S, KeyCode.A, KeyCode.D);
-        eventHandlerFirstShot  = warriorsShoot(Game.playerGlobalFirst, KeyCode.X, bulletFirst);
+        eventHandlerFirstShot = warriorsShoot(Game.playerGlobalFirst, KeyCode.X, bulletFirst);
 
         imageViewPlayerFirst.sceneProperty().addListener((obs, oldScene, newScene) -> {
             newScene.addEventFilter(KeyEvent.KEY_PRESSED, eventHandlerFirstMove);
@@ -347,14 +354,13 @@ public class RootController implements Initializable {
                                     if (isOpponentHit(bullet, player2)) {
 
                                         ///////////////////////////////////////////// START - do metody aktualizacji życia
-                                        if (opponent.getHealth()  == 1){
+                                        if (opponent.getHealth() == 1) {
                                             soundEffectOnDeath(opponent);
                                             opponent.reduceHealth();
                                             System.out.println(opponent.getNick() + " health = " + opponent.getHealth());
                                             System.out.println(BLUE + player.getNick() + " has won the game !!!  .... and " + opponent.getNick() + " lose" + RESET);
                                             root.getChildren().remove(bullet);
 
-                                            
                                             root.getScene().removeEventFilter(KeyEvent.KEY_PRESSED, eventHandlerFirstMove);
                                             root.getScene().removeEventFilter(KeyEvent.KEY_PRESSED, eventHandlerSecondMove);
                                             root.getScene().removeEventFilter(KeyEvent.KEY_PRESSED, eventHandlerFirstShot);
@@ -386,17 +392,43 @@ public class RootController implements Initializable {
                                             player.increaseWins();
                                             opponent.increaseLoses();
 
-                                            System.out.println("STATISTICS - " + player.getNick() + ": has " +player.getWins() +" wins and " + player.getLoses() + " loses");
-                                            System.out.println("STATISTICS - " + opponent.getNick() + ": has " +opponent.getWins() +" wins and " + opponent.getLoses() + " loses");
+                                            System.out.println("STATISTICS - " + player.getNick() + ": has " + player.getWins() + " wins and " + player.getLoses() + " loses");
+                                            System.out.println("STATISTICS - " + opponent.getNick() + ": has " + opponent.getWins() + " wins and " + opponent.getLoses() + " loses");
 
                                             timeline.stop();
 
+                                            player.setJustWon(true);
+
+//                                            setNewRoot();
+
+
+
+
+
+
+
+
+//                                            ((Stage) root.getScene().getWindow()).close();
+                                            currentStage = ((Stage) root.getScene().getWindow());
+
+                                            FXMLLoader fxmlLoader = new FXMLLoader(Game.class.getResource("end.fxml"));
                                             try {
-                                                player.setJustWon(true);
-                                                Game.setRoot("end",WELCOME_WIDTH+15, WELCOME_HEIGHT+35);
+                                                scene = new Scene(fxmlLoader.load());
                                             } catch (IOException e) {
                                                 e.printStackTrace();
                                             }
+                                            endStage = new Stage();
+                                            endStage.setTitle("FIGHT OVER - STATISTICS");
+                                            endStage.setScene(scene);
+                                            endStage.setWidth(WELCOME_WIDTH);
+                                            endStage.setHeight(WELCOME_HEIGHT);
+                                            endStage.show();
+
+                                            currentStage.hide();
+
+                                            System.out.println("STATISTICS - " + player.getNick() + ": has " + player.getWins() + " wins and " + player.getLoses() + " loses");
+                                            System.out.println("STATISTICS - " + opponent.getNick() + ": has " + opponent.getWins() + " wins and " + opponent.getLoses() + " loses");
+
                                             return;
                                         }
 
@@ -486,6 +518,26 @@ public class RootController implements Initializable {
             mediaPlayer("src/main/resources/pl/rav/graphics/avatars/monsters/deathMonster.mp3").play();
         } else {
             mediaPlayer("src/main/resources/pl/rav/graphics/avatars/humans/deathHuman.mp3").play();
+        }
+    }
+
+    private void launchEnd() {
+        if (endStage == null) {
+            setNewRoot();
+            endStage = new Stage();
+            endStage.setOnHiding(we -> endStage = null);
+            endStage.setScene(new Scene(root));
+            endStage.show();
+        } else {
+            endStage.toFront();
+        }
+    }
+
+    private void setNewRoot() {
+        try {
+            Game.setRoot("end", WELCOME_WIDTH + 15, WELCOME_HEIGHT + 35);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

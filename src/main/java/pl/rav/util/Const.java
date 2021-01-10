@@ -43,7 +43,7 @@ public class Const {
     public static final String RESET = "\u001B[0m";
 
     public static final String INITIAL_POINTS = "0";
-    public static final int START_HEALTH = 1;
+    public static final int INITIAL_HEALTH = 1;
 
     // SOUNDS
     public static final String SHOT_SOUND = "src/main/resources/pl/rav/graphics/bullets/bulletSound01.mp3";

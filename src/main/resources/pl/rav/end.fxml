@@ -19,17 +19,19 @@
         <Const fx:id="windowWidth" fx:constant="END_WIDTH"/>
     </fx:define>
 
-    <HBox prefWidth="$windowWidth" GridPane.rowIndex="1" style="-fx-padding: 10;">
+    <HBox GridPane.columnSpan="2" GridPane.rowIndex="0" prefWidth="$windowWidth"  style="-fx-padding: 10;">
         <Label fx:id="nickWon"/>
-        <Label text=" has won" alignment="TOP_LEFT"/>
+<!--        <Label text=" has won" alignment="TOP_LEFT"/>-->
     </HBox>
 
-    <HBox prefWidth="$windowWidth" GridPane.rowIndex="3" style="-fx-padding: 10;">
+
+
+    <HBox prefWidth="$windowWidth" GridPane.columnSpan="2" GridPane.rowIndex="2" style="-fx-padding: 10;">
         <Label fx:id="nickLose"/>
-        <Label text="has lose" GridPane.halignment="LEFT"/>
+<!--        <Label text="has lose" GridPane.halignment="LEFT"/>-->
     </HBox>
 
-    <HBox GridPane.rowIndex="5" styleClass="race" style="-fx-padding: 10;">
+    <HBox GridPane.columnSpan="2" GridPane.rowIndex="5" styleClass="race" style="-fx-padding: 10;">
         <Button styleClass="race" onAction="#playAgain">
             <graphic>
                 <ImageView>
@@ -40,7 +42,7 @@
 
     </HBox>
 
-    <HBox GridPane.rowIndex="6">
+    <HBox GridPane.columnSpan="2" GridPane.rowIndex="6">
         <Label text="PLAY AGAIN ?" style="-fx-padding: -10;"/>
     </HBox>
 

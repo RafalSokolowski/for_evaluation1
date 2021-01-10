@@ -23,8 +23,8 @@ public class Game extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
-        scene = new Scene(loadFXML("root"), MAIN_APP_WIDTH, MAIN_APP_HEIGHT); // !!! - do uzytku na czas setup batt;efield
-//        scene = new Scene(loadFXML("welcome"), WELCOME_WIDTH, WELCOME_HEIGHT); // !!! TODO: - wyłączone na czas setup battlefield - !!!!
+//        scene = new Scene(loadFXML("root"), MAIN_APP_WIDTH, MAIN_APP_HEIGHT); // !!! - do uzytku na czas setup batt;efield
+        scene = new Scene(loadFXML("welcome"), WELCOME_WIDTH, WELCOME_HEIGHT); // !!! TODO: - wyłączone na czas setup battlefield - !!!!
 
         stage.setTitle("simple mini strategy game");
         stage.setScene(scene);
@@ -50,10 +50,19 @@ public class Game extends Application {
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
+
+        System.out.println(BLUE+Game.class.getResource("root.fxml")+RESET);
+        System.out.println(BLUE+Game.class.getResource(fxml + ".fxml")+RESET);
+
         FXMLLoader fxmlLoader = new FXMLLoader(Game.class.getResource(fxml + ".fxml"));
 
         return fxmlLoader.load();
     }
+
+//    @Override
+//    public void stop() throws Exception {
+//
+//    }
 
     public static void main(String[] args) {
         launch();
