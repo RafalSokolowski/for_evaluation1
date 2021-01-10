@@ -1,15 +1,10 @@
 package pl.rav.control;
 
 import javafx.animation.*;
-import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.BooleanBinding;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Bounds;
-import javafx.geometry.Point2D;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -277,26 +272,18 @@ public class RootController implements Initializable {
             ImageView player1,
             ImageView player2,
             KeyCode shot,
-//            Timeline timeline,
             ImageView bullet
     ) {
         EventHandler<KeyEvent> keyShootListener = keyEvent -> {
-
-//            System.out.println("UP: " + timeline.getStatus());
-
-//            if (keyEvent.getCode() == shot && timeline.getStatus() != Animation.Status.RUNNING) {
             if (keyEvent.getCode() == shot && !root.getChildren().contains(bullet)) {
-//            if (keyEvent.getCode() == shot) {
 
                 soundEffect(SHOT_SOUND).play();
-
 
                 double bulletFromX = player1.getX() + AVATAR_BATTLEFIELD_SIZE / 2;
                 double bulletFromY = player1.getY() + AVATAR_BATTLEFIELD_SIZE / 2;
                 double bulletToX = player2.getX() + AVATAR_BATTLEFIELD_SIZE / 2;
                 double bulletToY = player2.getY() + AVATAR_BATTLEFIELD_SIZE / 2;
 
-//                ImageView bullet = createGraphicsFromPath(BULLET_PATH, BULLET_WIDTH);
                 ImageView explode = createGraphicsFromPath(EXPLODE_PATH, EXPLODE_WIDTH);
 
                 root.getChildren().add(bullet);
@@ -311,8 +298,6 @@ public class RootController implements Initializable {
                 shotTransition.setToX(bulletToX);
                 shotTransition.setToY(bulletToY);
 
-//                explode.setLayoutX(bulletToX);
-//                explode.setLayoutY(bulletToY);
                 FadeTransition explodeTransition = new FadeTransition(Duration.millis(SHOT_DURATION / 2), explode);
                 explodeTransition.setFromValue(1.0f);
                 explodeTransition.setToValue(0f);
@@ -321,30 +306,29 @@ public class RootController implements Initializable {
                 bullet.setLayoutX(bulletFromX);
                 bullet.setLayoutY(bulletFromY);
 
+                double deltaX = (bulletFromX - bulletToX) / SHOT_DURATION;
+                double deltaY = (bulletFromY - bulletToY) / SHOT_DURATION;
+
+                double deltaAllX = (bulletFromX - bulletToX);
+                double deltaAllY = (bulletFromY - bulletToY);
+                double distance = Math.sqrt(Math.pow(deltaAllX, 2) + Math.pow(deltaAllY, 2));
+                int oneCycleTime = distance <= SHOT_DURATION ? 1 : (int) (distance / SHOT_DURATION);
+                System.out.println(RED + "distance: " + distance + RESET);
+                System.out.println(RED + "oneCycleTime: " + oneCycleTime + RESET);
+
                 Timeline timeline = new Timeline();
 
                 timeline.getKeyFrames().add(
 
-//                        new KeyFrame(Duration.millis(0), new KeyValue(bullet.translateXProperty(), bulletFromX), new KeyValue(bullet.translateYProperty(), bulletFromY)),
-
                         new KeyFrame(
-                                Duration.millis(5),
+                                Duration.millis(oneCycleTime),
                                 new EventHandler<>() {
 
-                                    double deltaX = (bulletFromX - bulletToX) / SHOT_DURATION;
-                                    double deltaY = (bulletFromY - bulletToY) / SHOT_DURATION;
+//                                    double deltaX = (bulletFromX - bulletToX) / SHOT_DURATION;
+//                                    double deltaY = (bulletFromY - bulletToY) / SHOT_DURATION;
 
                                     @Override
                                     public void handle(ActionEvent actionEvent) {
-
-//                                        Point2D playerLtP = player2.localToParent(player2.getX(), player2.getY());
-//                                        Point2D bulletLtP = bullet.localToParent(bullet.getX(), bullet.getY());
-//
-//                                        System.out.println(RED + "Player local to Parent: " + playerLtP + RESET);
-//                                        System.out.println(RED + "Bullet local to Parent: " + bulletLtP + RESET);
-
-//                                        System.out.println("Bullet from: " + bulletFromX + ", " + bulletFromY );
-//                                        System.out.println("Bullet to:   " + bulletToX + ", " + bulletToY);
 
                                         bullet.setLayoutX(bullet.getLayoutX() - deltaX);
                                         bullet.setLayoutY(bullet.getLayoutY() - deltaY);
@@ -354,37 +338,26 @@ public class RootController implements Initializable {
                                         System.out.println("SHOOTING AREA Y: " + (player2.getY() + AVATAR_BATTLEFIELD_SIZE - 15) + ", " + (player2.getY() + 15));
                                         System.out.println(BLUE + "DELTA: " + deltaX + ", " + deltaY + RESET);
 
-                                        Point2D player2D = player2.localToParent(player2.getX(), player2.getY());
-                                        Point2D bullet2D = bullet.localToParent(bullet.getX(), bullet.getY());
-
-//                                        System.out.println("distance: " + player2D.distance(bullet2D));
-
-                                        if (
-                                                bullet.getLayoutX() <= player2.getX() + AVATAR_BATTLEFIELD_SIZE && bullet.getLayoutX() >= player2.getX() &&
-                                                bullet.getLayoutY() <= player2.getY() + AVATAR_BATTLEFIELD_SIZE && bullet.getLayoutY() >= player2.getY()
-                                        ) {
-                                            System.out.println(RED + "distance: " + player2D.distance(bullet2D) + " <------- BOOM" + RESET);
+//                                        if (bullet.getLayoutX() <= player2.getX() + AVATAR_BATTLEFIELD_SIZE && bullet.getLayoutX() >= player2.getX() && bullet.getLayoutY() <= player2.getY() + AVATAR_BATTLEFIELD_SIZE && bullet.getLayoutY() >= player2.getY()) {
+                                        if (isOpponentHit(bullet, player2)) {
+                                            System.out.print(RED + " --------------- BOOM ----------- \n" + RESET);
 
                                             root.getChildren().remove(bullet);
                                             explode.setLayoutX(bullet.getLayoutX() - 12);
                                             explode.setLayoutY(bullet.getLayoutY() - 12);
                                             root.getChildren().add(explode);
                                             explodeTransition.play();
-//                                            root.getChildren().remove(explode);
                                             timeline.stop();
                                         }
 
                                     }
                                 })
-
-//                        new KeyFrame(Duration.millis(SHOT_DURATION), new KeyValue(bullet.translateXProperty(), bulletToX), new KeyValue(bullet.translateYProperty(), bulletToY))
                 );
 
                 timeline.setOnFinished(event -> {
                     root.getChildren().remove(bullet);
                     explode.setLayoutX(bullet.getLayoutX());
                     explode.setLayoutY(bullet.getLayoutY());
-//                    root.getChildren().add(explode);
                     explodeTransition.play();
                     if (root.getChildren().contains(explode)) {
                         root.getChildren().remove(explode);
@@ -394,107 +367,16 @@ public class RootController implements Initializable {
                 timeline.setCycleCount((int) SHOT_DURATION);
                 timeline.play();
 
-                /// :)
-
-//                    Timeline timeline = new Timeline(
-//                            new KeyFrame(Duration.millis(0), new KeyValue(bullet.translateXProperty(), bulletFromX), new KeyValue(bullet.translateYProperty(), bulletFromY)),
-//                            new KeyFrame(Duration.millis(2000), new KeyValue(bullet.translateXProperty(), bulletToX), new KeyValue(bullet.translateYProperty(), bulletToY)),
-//                            new KeyFrame(Duration.millis(3000))
-//                    );
-
-
-//                timeline.getKeyFrames().addAll(
-//                        new KeyFrame(Duration.millis(0), new KeyValue(bullet.translateXProperty(), bulletFromX), new KeyValue(bullet.translateYProperty(), bulletFromY)),
-//                        new KeyFrame(Duration.millis(SHOT_DURATION), new KeyValue(bullet.translateXProperty(), bulletToX), new KeyValue(bullet.translateYProperty(), bulletToY))
-////                            new KeyFrame(Duration.millis(3000))
-//                );
-
-
-//                BooleanBinding hit = Bindings.createBooleanBinding(() -> {
-//                    Point2D targetLocation = player2.localToParent(player2.getX(), player2.getY());
-//                    Point2D projectileLocation = bullet.localToParent(bullet.getX(), bullet.getY());
-//                    System.out.println();
-//                    System.out.println("player2.getX(): " + targetLocation.getX());
-//                    System.out.println("player2.getY(): " + targetLocation.getY());
-//                    System.out.println("bullet.getX(): " + projectileLocation.getX());
-//                    System.out.println("bullet.getY(): " + projectileLocation.getY());
-//                    System.out.println("distance: " + targetLocation.distance(projectileLocation));
-//
-//                    System.out.println();
-//                    return (targetLocation.distance(projectileLocation) <= 50);
-//                }, bullet.translateXProperty(), bullet.translateYProperty());
-//
-//
-//                hit.addListener((obs, wasHit, isNowHit) -> {
-////                        System.out.println();
-////                        System.out.println("player2.getX(): " + (int)targetLocation.getX());
-////                        System.out.println("player2.getY(): " + (int)targetLocation.getY());
-////                        System.out.println("bullet.getX(): " + (int)projectileLocation.getX());
-////                        System.out.println("bullet.getY(): " + (int)projectileLocation.getY());
-////                        System.out.println();
-//                    if (isNowHit) {
-//                        System.out.println("Hit!!!!");
-////                            root.getChildren().remove(bullet);
-////                            root.getChildren().remove(target);
-//                    }
-//                });
-
-//                    timeline.getKeyFrames().addListener(
-//                            (InvalidationListener) event -> {
-//                                if (player2.getX() - bullet.getX() < 50 && player2.getY() - bullet.getY() < 50){
-//                                    System.out.println("HIT !!!");
-//                                }
-//                            }
-//                    );
-
-
-//                KeyFrame keyFrame1 = new KeyFrame(Duration.millis(0), new KeyValue(bullet.translateXProperty(), bulletFromX), new KeyValue(bullet.translateYProperty(), bulletFromY));
-//                KeyFrame keyFrame3 = new KeyFrame(Duration.millis(2000), new KeyValue(bullet.translateXProperty(), bulletToX), new KeyValue(bullet.translateYProperty(), bulletToY));
-//                KeyFrame keyFrame2 = new KeyFrame(Duration.millis(2000),
-//                        new EventHandler<>() {
-//                            @Override
-//                            public void handle(ActionEvent actionEvent) {
-//
-//
-//                                Point2D player22D = player2.localToParent(player2.getX(), player2.getY());
-//                                Point2D bullet2D = bullet.localToParent(bullet.getX(), bullet.getY());
-//
-//                                System.out.println("distance: " + player22D.distance(bullet2D));
-//                                System.out.println("player2.getX(): " + player2.getX());
-//                                System.out.println("player2.getY(): " + player2.getY());
-//                                System.out.println("bullet.getX(): " + bullet.getX());
-//                                System.out.println("bullet.getY(): " + bullet.getY());
-//
-////                                    System.out.println("player22D: " + player22D);
-////                                    System.out.println("bullet2D: " + bullet2D);
-////
-////                                    System.out.println("player2.getX(): " + player2.getX());
-////                                    System.out.println("bullet.getX(): " + bullet.getX());
-////                                    if (player22D.distance(bullet2D)<=0) {
-//                                if (player22D.distance(bullet2D) == 0) {
-//                                    System.out.println("HIT !!!");
-//                                }
-//                            }
-//                        });
-//
-////                    timeline.getKeyFrames().addAll(keyFrame2,keyFrame1, keyFrame3);
-////                    timeline.getKeyFrames().addAll(keyFrame1,keyFrame2);
-//
-//
-//                timeline.setOnFinished(event -> {
-//                    root.getChildren().remove(bullet);
-//                    root.getChildren().add(explode);
-//                    explodeTransition.play();
-//                });
-//
-//                timeline.play();
-
                 System.out.println(player1.getImage() + " SHOT towards " + player2.getImage());
             }
-//            System.out.println("DOWN: " + timeline.getStatus());
         };
 
         return keyShootListener;
+    }
+
+    private boolean isOpponentHit(ImageView bullet, ImageView player2) {
+        return bullet.getLayoutX() <= player2.getX() + AVATAR_BATTLEFIELD_SIZE && bullet.getLayoutX() >= player2.getX() &&
+                bullet.getLayoutY() <= player2.getY() + AVATAR_BATTLEFIELD_SIZE && bullet.getLayoutY() >= player2.getY();
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -23,7 +23,7 @@ public class Const {
     public static final int BULLET_RANGE = 300;
     public static final int EXPLODE_WIDTH = 40;
 
-    public static final double SHOT_DURATION = 300.0;
+    public static final double SHOT_DURATION = 100.0;
 
 
     public static final int BATTLEFIELD_START_X = MENU_LEFT_RIGHT_SIZE;
