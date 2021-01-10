@@ -22,8 +22,9 @@ public class Graphics {
         Image image = new Image(inputStream);
         ImageView imageView = new ImageView(image);
         imageView.setVisible(true);
-        imageView.setPreserveRatio(true);
+//        imageView.setPreserveRatio(true);
         imageView.setFitWidth(width);
+        imageView.setFitHeight(width);
         return imageView;
     }
 

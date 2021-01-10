@@ -3,11 +3,11 @@ GridPane {
     -fx-font-weight: bold;
     -fx-alignment: center;
     -fx-background-color: #111111;
-    /*-fx-background-image: url("../graphics/background/background01.png");*/
+    -fx-background-image: url("../graphics/background/background06.jpg");
     -fx-background-position: center center;
     -fx-background-repeat: stretch;
-    /*-fx-background-opacity-image: 50%;*/
-    -fx-opacity: 0.9;
+    /*-fx-background-opacity-image: 10%;*/
+    -fx-opacity: 1;
 }
 
 HBox {

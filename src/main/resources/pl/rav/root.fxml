@@ -29,11 +29,11 @@
 
     <top>
         <HBox styleClass="top" minHeight="$menuTopSize">
-            <Label fx:id="playerVsPlayer"/>
-            <Label text="Turn no: "/>
-            <Label text="Game time: "/>
-            <Label text="Save"/>
-            <Label text="Upload"/>
+            <Label fx:id="playerVsPlayer" style="-fx-font: 40px Tohoma; -fx-font-weight: bold;"/>
+            <Label fx:id="turnNo" text="Turn no: " style="-fx-font: 40px Tohoma; -fx-font-weight: bold;"/>
+<!--            <Label text="Game time: "/>-->
+<!--            <Label text="Save"/>-->
+<!--            <Label text="Upload"/>-->
         </HBox>
     </top>
 
@@ -58,12 +58,16 @@
                     <Label styleClass="playerColorBlue" text="BLUE"/>
                 </HBox>
                 <HBox>
-                    <Label styleClass="player" text="Moves :"/>
+                    <Label styleClass="player" text=" "/>
                     <Label styleClass="player" fx:id="leftMoves"/>
                 </HBox>
                 <HBox>
-                    <Label styleClass="player" text="Score :"/>
-                    <Label styleClass="player" fx:id="scoreLeft"/>
+                    <Label styleClass="player" text="Wins :  "/>
+                    <Label styleClass="player" fx:id="winsLeft"/>
+                </HBox>
+                <HBox>
+                    <Label styleClass="player" text="Loses : "/>
+                    <Label styleClass="player" fx:id="losesLeft"/>
                 </HBox>
             </VBox>
         </VBox>
@@ -95,12 +99,16 @@
                     <Label styleClass="playerColorRed" text="RED"/>
                 </HBox>
                 <HBox>
-                    <Label styleClass="player" text="Moves :"/>
+                    <Label styleClass="player" text=" "/>
                     <Label styleClass="player" fx:id="rightMoves"/>
                 </HBox>
                 <HBox>
-                    <Label styleClass="player" text="Score :"/>
-                    <Label styleClass="player" fx:id="scoreRight"/>
+                    <Label styleClass="player" text="Wins :  "/>
+                    <Label styleClass="player" fx:id="winsRight"/>
+                </HBox>
+                <HBox>
+                    <Label styleClass="player" text="Loses : "/>
+                    <Label styleClass="player" fx:id="losesRight"/>
                 </HBox>
             </VBox>
         </VBox>
@@ -123,14 +131,3 @@
     </bottom>
 
 </BorderPane>
-
-
-        <!--<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.rav.control.PrimaryController">-->
-        <!--   <children>-->
-        <!--      <Label text="Primary View" />-->
-        <!--      <Button fx:id="primaryButton" text="Switch to Secondary View" onAction="#switchToSecondary"/>-->
-        <!--   </children>-->
-        <!--   <padding>-->
-        <!--      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />-->
-        <!--   </padding>-->
-        <!--</VBox>-->

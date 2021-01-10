@@ -12,8 +12,7 @@
 <GridPane fx:id="welcome"
           fx:controller="pl.rav.control.WelcomeController"
           xmlns:fx="http://javafx.com/fxml"
-          stylesheets="@css/welcome.css"
-          gridLinesVisible="true">
+          stylesheets="@css/welcome.css">
 
     <HBox GridPane.rowIndex="1">
         <Label text="Provide your nick: "/>
@@ -24,14 +23,14 @@
         <Label text="Select your race: "/>
 
         <HBox>
-            <Button fx:id="monster" styleClass="race" text="monsters" onAction="#raceSelected">
+            <Button fx:id="monster" styleClass="race" text="monsters" onAction="#raceSelected" style="-fx-text-fill: white">
                 <graphic>
                     <ImageView>
                         <Image url="@graphics/race/monsters.png" preserveRatio="true" requestedHeight="80"/>
                     </ImageView>
                 </graphic>
             </Button>
-            <Button fx:id="human" styleClass="race" text="humans" onAction="#raceSelected">
+            <Button fx:id="human" styleClass="race" text="humans" onAction="#raceSelected" style="-fx-text-fill: white">
                 <graphic>
                     <ImageView>
                         <Image url="@graphics/race/humans.png" preserveRatio="true" requestedHeight="80"/>
@@ -44,7 +43,7 @@
     <!-- MONSTERS-->
     <VBox fx:id="monsterSelected" GridPane.rowIndex="3" visible="false">
         <Label text="Select your avatar: "/>
-        <Button styleClass="avatar" text="Heavy Monster" onAction="#avatarSelected">
+        <Button styleClass="avatar" text="Heavy Monster" onAction="#avatarSelected" style="-fx-text-fill: white">
             <graphic>
                 <ImageView>
                     <Image url="@graphics/avatars/monsters/monsterAvatar01.png" preserveRatio="true"
@@ -53,7 +52,7 @@
             </graphic>
         </Button>
 
-        <Button styleClass="avatar" text="Medium Monster" onAction="#avatarSelected">
+        <Button styleClass="avatar" text="Medium Monster" onAction="#avatarSelected" style="-fx-text-fill: white">
             <graphic>
                 <ImageView>
                     <Image url="@graphics/avatars/monsters/monsterAvatar02.png" preserveRatio="true"
@@ -61,7 +60,7 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Button styleClass="avatar" text="Light Monster" onAction="#avatarSelected">
+        <Button styleClass="avatar" text="Light Monster" onAction="#avatarSelected" style="-fx-text-fill: white">
             <graphic>
                 <ImageView>
                     <Image url="@graphics/avatars/monsters/monsterAvatar03.png" preserveRatio="true"
@@ -75,7 +74,7 @@
     <!-- HUMANS -->
     <VBox fx:id="humanSelected" GridPane.rowIndex="3" visible="false">
         <Label text="Select your avatar: "/>
-        <Button styleClass="avatar" text="Heavy Guy" onAction="#avatarSelected">
+        <Button styleClass="avatar" text="Heavy Guy" onAction="#avatarSelected" style="-fx-text-fill: white">
             <graphic>
                 <ImageView>
                     <Image url="@graphics/avatars/humans/humanAvatar01.png" preserveRatio="true"
@@ -84,7 +83,7 @@
             </graphic>
         </Button>
 
-        <Button styleClass="avatar" text="Medium Guy" onAction="#avatarSelected">
+        <Button styleClass="avatar" text="Medium Guy" onAction="#avatarSelected" style="-fx-text-fill: white">
             <graphic>
                 <ImageView>
                     <Image url="@graphics/avatars/humans/humanAvatar02.png" preserveRatio="true"
@@ -92,7 +91,7 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Button styleClass="avatar" text="Light Guy" onAction="#avatarSelected">
+        <Button styleClass="avatar" text="Light Guy" onAction="#avatarSelected" style="-fx-text-fill: white">
             <graphic>
                 <ImageView>
                     <Image url="@graphics/avatars/humans/humanAvatar03.png" preserveRatio="true"

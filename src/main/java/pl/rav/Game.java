@@ -19,16 +19,18 @@ public class Game extends Application {
     public static Scene scene;
     public static Player playerGlobalFirst;
     public static Player playerGlobalSecond;
+    public static int turn;
 
     @Override
     public void start(Stage stage) throws IOException {
 
 //        scene = new Scene(loadFXML("root"), MAIN_APP_WIDTH, MAIN_APP_HEIGHT); // !!! - do uzytku na czas setup batt;efield
         scene = new Scene(loadFXML("welcome"), WELCOME_WIDTH, WELCOME_HEIGHT); // !!! TODO: - wyłączone na czas setup battlefield - !!!!
+        turn = 1;
 
         stage.setTitle("simple mini strategy game");
         stage.setScene(scene);
-//        stage.setResizable(false);
+        stage.setResizable(false);
         stage.show();
 
     }
@@ -44,25 +46,24 @@ public class Game extends Application {
     }
 
     public static void setRoot(String fxmlFile, double width, double height, double positionStartX, double positionStartY) throws IOException {
-        setRoot(fxmlFile,width,height);
+        setRoot(fxmlFile, width, height);
         scene.getWindow().setX(positionStartX);
         scene.getWindow().setY(positionStartY);
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
-
-        System.out.println(BLUE+Game.class.getResource("root.fxml")+RESET);
-        System.out.println(BLUE+Game.class.getResource(fxml + ".fxml")+RESET);
-
         FXMLLoader fxmlLoader = new FXMLLoader(Game.class.getResource(fxml + ".fxml"));
 
         return fxmlLoader.load();
     }
 
-//    @Override
-//    public void stop() throws Exception {
-//
-//    }
+    public static void incrementTurn() {
+        turn++;
+    }
+
+    public static int getTurn() {
+        return turn;
+    }
 
     public static void main(String[] args) {
         launch();

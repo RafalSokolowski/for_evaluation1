@@ -72,9 +72,6 @@ public class EndController implements Initializable {
 
         Game.playerGlobalFirst.resetHealth();
         Game.playerGlobalSecond.resetHealth();
-//        Game.playerGlobalFirst.setWinsAndLosesBetweenControllers(Game.playerGlobalFirst.getWins(), Game.playerGlobalFirst.getLoses());
-//        Game.playerGlobalSecond.setWinsAndLosesBetweenControllers(Game.playerGlobalSecond.getWins(), Game.playerGlobalSecond.getLoses());
-
 
     }
 

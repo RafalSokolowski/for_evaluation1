@@ -33,9 +33,7 @@ public class Const {
     public static final int BATTLEFIELD_END_X = MAIN_APP_WIDTH - MENU_LEFT_RIGHT_SIZE;
     public static final int BATTLEFIELD_END_Y = MAIN_APP_HEIGHT - MENU_BOTTOM_SIZE;
 
-//    public static final int BATTLEFIELD_HEIGHT = BATTLEFIELD_START_Y - BATTLEFIELD_END_Y;
     public static final int BATTLEFIELD_HEIGHT = BATTLEFIELD_END_Y - BATTLEFIELD_START_Y;
-//    public static final int BATTLEFIELD_WIDTH = BATTLEFIELD_START_X - BATTLEFIELD_END_X;
     public static final int BATTLEFIELD_WIDTH = BATTLEFIELD_END_X - BATTLEFIELD_START_X;
 
     public static final String RED = "\u001B[31m";
@@ -43,7 +41,7 @@ public class Const {
     public static final String RESET = "\u001B[0m";
 
     public static final String INITIAL_POINTS = "0";
-    public static final int INITIAL_HEALTH = 1;
+    public static final int INITIAL_HEALTH = 2;
 
     // SOUNDS
     public static final String SHOT_SOUND = "src/main/resources/pl/rav/graphics/bullets/bulletSound01.mp3";

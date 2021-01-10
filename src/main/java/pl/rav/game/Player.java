@@ -55,11 +55,6 @@ public class Player {
         health = INITIAL_HEALTH;
     }
 
-    public void setWinsAndLosesBetweenControllers(int wins, int loses) {
-        this.wins = wins;
-        this.loses = loses;
-    }
-
     public boolean isDeath() {
         return health <= 0;
     }

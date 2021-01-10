@@ -10,8 +10,8 @@ BorderPane {
     -fx-pref-height: 60px;
 }
 .center {
+    -fx-background-image: url("../graphics/background/background02.png");
     -fx-cursor: hand;
-    -fx-background-color: #888888;
 }
 
 .bottom {
