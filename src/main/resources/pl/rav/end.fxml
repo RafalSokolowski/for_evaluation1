@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.GridPane?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import pl.rav.util.Const?>
+<GridPane fx:id="end"
+          fx:controller="pl.rav.control.EndController"
+          xmlns:fx="http://javafx.com/fxml"
+          stylesheets="@css/welcome.css">
+
+    <fx:define>
+        <Const fx:id="windowWidth" fx:constant="END_WIDTH"/>
+    </fx:define>
+
+    <HBox prefWidth="$windowWidth" GridPane.rowIndex="1" style="-fx-padding: 10;">
+        <Label fx:id="nickWon"/>
+        <Label text=" has won" alignment="TOP_LEFT"/>
+    </HBox>
+
+    <HBox prefWidth="$windowWidth" GridPane.rowIndex="3" style="-fx-padding: 10;">
+        <Label fx:id="nickLose"/>
+        <Label text="has lose" GridPane.halignment="LEFT"/>
+    </HBox>
+
+    <HBox GridPane.rowIndex="5" styleClass="race" style="-fx-padding: 10;">
+        <Button styleClass="race" onAction="#playAgain">
+            <graphic>
+                <ImageView>
+                    <Image url="@graphics/buttons/playAgain.png" preserveRatio="true" requestedHeight="80"/>
+                </ImageView>
+            </graphic>
+        </Button>
+
+    </HBox>
+
+    <HBox GridPane.rowIndex="6">
+        <Label text="PLAY AGAIN ?" style="-fx-padding: -10;"/>
+    </HBox>
+
+</GridPane>

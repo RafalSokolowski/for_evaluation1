@@ -14,6 +14,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.layout.Pane?>
 
+<?import javafx.scene.control.TextField?>
 <BorderPane fx:id="root"
             fx:controller="pl.rav.control.RootController"
             xmlns:fx="http://javafx.com/fxml"
@@ -71,8 +72,6 @@
     <center>
         <GridPane fx:id="battlefield" styleClass="center"
                   prefHeight="$battlefieldHeight" prefWidth="$battlefieldWidth">
-
-
         </GridPane>
     </center>
 

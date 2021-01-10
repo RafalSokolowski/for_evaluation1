@@ -17,7 +17,6 @@ VBox {
     -fx-alignment: center;
 }
 
-
 Label {
     -fx-text-fill: white;
     -fx-padding: 20px;

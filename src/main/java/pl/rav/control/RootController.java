@@ -1,10 +1,10 @@
 package pl.rav.control;
 
 import javafx.animation.*;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -12,9 +12,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
+import javafx.scene.shape.*;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -23,6 +21,9 @@ import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import pl.rav.Game;
 import pl.rav.game.Player;
+import pl.rav.util.Avatar;
+import pl.rav.util.Graphics;
+import pl.rav.util.Race;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -52,8 +53,18 @@ public class RootController implements Initializable {
     @FXML
     private GridPane battlefield;
 
-    private ImageView playerFirst;
-    private ImageView playerSecond;
+//    private Label whoWon;
+
+    private boolean isEnd;
+
+    //    private ImageView imageViewPlayerFirst;
+//    private ImageView imageViewPlayerSecond;
+    EventHandler<KeyEvent> eventHandlerFirstMove;
+    EventHandler<KeyEvent> eventHandlerSecondMove;
+    EventHandler<KeyEvent> eventHandlerFirstShot;
+    EventHandler<KeyEvent> eventHandlerSecondShot;
+
+    Graphics graphics;
 
     private List<ImageView> rocketsFirstPlayer;
 
@@ -63,7 +74,7 @@ public class RootController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
 // TODO: !!! - wyłączone na czas setup battlefield - !!!!
-//
+
 //        setPlayerVsPlayer();
 //
 //        setAvatarLeft(avatarLeft, Game.playerGlobalFirst);
@@ -80,50 +91,42 @@ public class RootController implements Initializable {
 
 // TODO: !!! - wyłączone na czas setup battlefield - !!!!
 
-        playerFirst = placedWarriorOnTheBattlefield(
-//                Game.playerGlobalFirst.getAvatar().getPath(),             // TODO: !!! - wyłączone na czas setup battlefield - !!!!
-                "src/main/resources/pl/rav/graphics/avatars/humans/humanAvatar03.png",
+        graphics = new Graphics();
+
+        Game.playerGlobalFirst = new Player("Ksawery", Race.HUMANS, Avatar.HEAVY_GUY);        // TODO: !!! - wyłączone TYLKO na czas setup battlefield - !!!!
+        Game.playerGlobalSecond = new Player("Rafal", Race.MONSTERS, Avatar.MEDIUM_MONSTER);  // TODO: !!! - wyłączone TYLKO na czas setup battlefield - !!!!
+
+        ImageView imageViewPlayerFirst = placedWarriorOnTheBattlefield(
+                Game.playerGlobalFirst.getAvatar().getPath(),
                 BATTLEFIELD_START_X,
                 BATTLEFIELD_START_Y
         );
-        playerSecond = placedWarriorOnTheBattlefield(
-//                Game.playerGlobalSecond.getAvatar().getPath(),            // TODO: !!! - wyłączone na czas setup battlefield - !!!!
-                "src/main/resources/pl/rav/graphics/avatars/monsters/monsterAvatar03.png",
+        ImageView imageViewPlayerSecond = placedWarriorOnTheBattlefield(
+                Game.playerGlobalSecond.getAvatar().getPath(),
                 BATTLEFIELD_END_X - AVATAR_BATTLEFIELD_SIZE,
                 BATTLEFIELD_END_Y - AVATAR_BATTLEFIELD_SIZE
-//                400,
-//                300
         );
 
-//        playerFirst.sceneProperty().addListener((obs, oldScene, newScene) -> {
-//            newScene.addEventFilter(KeyEvent.KEY_PRESSED, warriorsMovement(playerFirst, playerSecond, KeyCode.W, KeyCode.S, KeyCode.A, KeyCode.D));
-//        });
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                playerFirst.sceneProperty().addListener((obs, oldScene, newScene) -> newScene.addEventFilter(KeyEvent.KEY_PRESSED, warriorsShoot(playerFirst, playerSecond, KeyCode.X)));
-//                try {
-//                    Thread.sleep(2000);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }).start();
+        Game.playerGlobalFirst.setOnTheBattlefield(imageViewPlayerFirst);
+        Game.playerGlobalSecond.setOnTheBattlefield(imageViewPlayerSecond);
 
 
-//        Timeline timelineFirst = new Timeline(new KeyFrame(Duration.millis(SHOT_DURATION)));
-        ImageView bulletFirst = createGraphicsFromPath(BULLET_PATH, BULLET_WIDTH);
-        playerFirst.sceneProperty().addListener((obs, oldScene, newScene) -> {
-            newScene.addEventFilter(KeyEvent.KEY_PRESSED, warriorsMovement(playerFirst, playerSecond, KeyCode.W, KeyCode.S, KeyCode.A, KeyCode.D));
-            newScene.addEventFilter(KeyEvent.KEY_PRESSED, warriorsShoot(playerFirst, playerSecond, KeyCode.X, bulletFirst));
-//            newScene.addEventFilter(KeyEvent.KEY_PRESSED, eventEventHandler);
+        ImageView bulletFirst = graphics.createGraphicsFromPath(BULLET_PATH, BULLET_WIDTH);
+        eventHandlerFirstMove = warriorsMovement(Game.playerGlobalFirst, KeyCode.W, KeyCode.S, KeyCode.A, KeyCode.D);
+        eventHandlerFirstShot  = warriorsShoot(Game.playerGlobalFirst, KeyCode.X, bulletFirst);
+
+        imageViewPlayerFirst.sceneProperty().addListener((obs, oldScene, newScene) -> {
+            newScene.addEventFilter(KeyEvent.KEY_PRESSED, eventHandlerFirstMove);
+            newScene.addEventFilter(KeyEvent.KEY_PRESSED, eventHandlerFirstShot);
         });
 
-//        Timeline timelineSecond = new Timeline(new KeyFrame(Duration.millis(SHOT_DURATION)));
-        ImageView bulletSecond = createGraphicsFromPath(BULLET_PATH, BULLET_WIDTH);
-        playerSecond.sceneProperty().addListener((obs, oldScene, newScene) -> {
-            newScene.addEventFilter(KeyEvent.KEY_PRESSED, warriorsMovement(playerSecond, playerFirst, KeyCode.UP, KeyCode.DOWN, KeyCode.LEFT, KeyCode.RIGHT));
-            newScene.addEventFilter(KeyEvent.KEY_PRESSED, warriorsShoot(playerSecond, playerFirst, KeyCode.SHIFT, bulletSecond));
+        ImageView bulletSecond = graphics.createGraphicsFromPath(BULLET_PATH, BULLET_WIDTH);
+        eventHandlerSecondMove = warriorsMovement(Game.playerGlobalSecond, KeyCode.UP, KeyCode.DOWN, KeyCode.LEFT, KeyCode.RIGHT);
+        eventHandlerSecondShot = warriorsShoot(Game.playerGlobalSecond, KeyCode.SHIFT, bulletSecond);
+
+        imageViewPlayerSecond.sceneProperty().addListener((obs, oldScene, newScene) -> {
+            newScene.addEventFilter(KeyEvent.KEY_PRESSED, eventHandlerSecondMove);
+            newScene.addEventFilter(KeyEvent.KEY_PRESSED, eventHandlerSecondShot);
         });
 
     }
@@ -143,7 +146,7 @@ public class RootController implements Initializable {
             where.setImage(image);
             where.setVisible(true);
             where.setPreserveRatio(true);
-            where.setFitHeight(AVATAR_MENU_HEIGHT);
+            where.setFitHeight(AVATAR_MENU_SIZE);
         } catch (IOException e) {
             System.err.println("Cannot load image exception (Class RootController): " + e.getMessage());
         }
@@ -164,21 +167,19 @@ public class RootController implements Initializable {
         leftOrRightSide.setStyle("-fx-font-weight: bold");
     }
 
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////   BATTLE - center window  ///////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////// BATTLEFIELD - setup //////////////////////////////////////////////////////////////
 
     public void goToTheBattle() {
-        root.getChildren().add(playerFirst);
-        root.getChildren().add(playerSecond);
+        root.getChildren().add(Game.playerGlobalFirst.getOnTheBattlefield());
+        root.getChildren().add(Game.playerGlobalSecond.getOnTheBattlefield());
 
 
-        System.out.println("x: " + playerFirst.getX());
-        System.out.println("y: " + playerFirst.getY());
-        System.out.println("height: " + playerFirst.getFitHeight());
-        System.out.println("width:  " + playerFirst.getFitWidth());
-        System.out.println("BATTLEFIELD_START_Y:  " + BATTLEFIELD_START_Y);
-        System.out.println("BATTLEFIELD_END_Y:  " + BATTLEFIELD_END_Y);
+//        System.out.println("x: " + imageViewPlayerFirst.getX());
+//        System.out.println("y: " + imageViewPlayerFirst.getY());
+//        System.out.println("height: " + imageViewPlayerFirst.getFitHeight());
+//        System.out.println("width:  " + imageViewPlayerFirst.getFitWidth());
+//        System.out.println("BATTLEFIELD_START_Y:  " + BATTLEFIELD_START_Y);
+//        System.out.println("BATTLEFIELD_END_Y:  " + BATTLEFIELD_END_Y);
     }
 
     private ImageView placedWarriorOnTheBattlefield(String avatarPath, double startX, double startY) {
@@ -205,7 +206,10 @@ public class RootController implements Initializable {
 
     /////////////////////////////////////////////// MOVEMENT /////////////////////////////////////////////////////////////////////////
 
-    private EventHandler<KeyEvent> warriorsMovement(ImageView player1, ImageView player2, KeyCode moveUp, KeyCode moveDown, KeyCode moveLeft, KeyCode moveRight) {
+    private EventHandler<KeyEvent> warriorsMovement(Player player, KeyCode moveUp, KeyCode moveDown, KeyCode moveLeft, KeyCode moveRight) {
+
+        ImageView player1 = player.getOnTheBattlefield();
+        ImageView player2 = getOpponent(player).getOnTheBattlefield();
 
         EventHandler<KeyEvent> keyPressListener = keyEvent -> {
             if (keyEvent.getCode() == moveUp) {
@@ -266,25 +270,31 @@ public class RootController implements Initializable {
         return keyPressListener;
     }
 
+    private Player getOpponent(Player player) {
+        return player.equals(Game.playerGlobalFirst) ? Game.playerGlobalSecond : Game.playerGlobalFirst;
+    }
+
     /////////////////////////////////////////////// SHOT //////////////////////////////////////////////////////////////////////////////
 
-    private EventHandler<KeyEvent> warriorsShoot(
-            ImageView player1,
-            ImageView player2,
-            KeyCode shot,
-            ImageView bullet
-    ) {
+    private EventHandler<KeyEvent> warriorsShoot(Player player, KeyCode shot, ImageView bullet) {
+
+        ImageView player1 = player.getOnTheBattlefield();
+        Player opponent = getOpponent(player);
+        ImageView player2 = opponent.getOnTheBattlefield();
+
         EventHandler<KeyEvent> keyShootListener = keyEvent -> {
             if (keyEvent.getCode() == shot && !root.getChildren().contains(bullet)) {
 
-                soundEffect(SHOT_SOUND).play();
+                System.out.println(player.getNick() + " SHOT towards " + opponent.getNick());
+
+                mediaPlayer(SHOT_SOUND).play();
 
                 double bulletFromX = player1.getX() + AVATAR_BATTLEFIELD_SIZE / 2;
                 double bulletFromY = player1.getY() + AVATAR_BATTLEFIELD_SIZE / 2;
                 double bulletToX = player2.getX() + AVATAR_BATTLEFIELD_SIZE / 2;
                 double bulletToY = player2.getY() + AVATAR_BATTLEFIELD_SIZE / 2;
 
-                ImageView explode = createGraphicsFromPath(EXPLODE_PATH, EXPLODE_WIDTH);
+                ImageView explode = graphics.createGraphicsFromPath(EXPLODE_PATH, EXPLODE_WIDTH);
 
                 root.getChildren().add(bullet);
 
@@ -313,44 +323,119 @@ public class RootController implements Initializable {
                 double deltaAllY = (bulletFromY - bulletToY);
                 double distance = Math.sqrt(Math.pow(deltaAllX, 2) + Math.pow(deltaAllY, 2));
                 int oneCycleTime = distance <= SHOT_DURATION ? 1 : (int) (distance / SHOT_DURATION);
-                System.out.println(RED + "distance: " + distance + RESET);
-                System.out.println(RED + "oneCycleTime: " + oneCycleTime + RESET);
+//                System.out.println(RED + "distance: " + distance + RESET);
+//                System.out.println(RED + "oneCycleTime: " + oneCycleTime + RESET);
 
                 Timeline timeline = new Timeline();
-
+//                                    double deltaX = (bulletFromX - bulletToX) / SHOT_DURATION;
+//                                    double deltaY = (bulletFromY - bulletToY) / SHOT_DURATION;
                 timeline.getKeyFrames().add(
 
                         new KeyFrame(
                                 Duration.millis(oneCycleTime),
-                                new EventHandler<>() {
+                                actionEvent -> {
 
-//                                    double deltaX = (bulletFromX - bulletToX) / SHOT_DURATION;
-//                                    double deltaY = (bulletFromY - bulletToY) / SHOT_DURATION;
-
-                                    @Override
-                                    public void handle(ActionEvent actionEvent) {
-
-                                        bullet.setLayoutX(bullet.getLayoutX() - deltaX);
-                                        bullet.setLayoutY(bullet.getLayoutY() - deltaY);
-                                        System.out.println("bullet position: " + bullet.getLayoutX() + ", " + bullet.getLayoutY());
-                                        System.out.println("player2 position: " + player2.getX() + ", " + player2.getY());
-                                        System.out.println("SHOOTING AREA X: " + (player2.getX() + AVATAR_BATTLEFIELD_SIZE - 15) + ", " + (player2.getX() + 15));
-                                        System.out.println("SHOOTING AREA Y: " + (player2.getY() + AVATAR_BATTLEFIELD_SIZE - 15) + ", " + (player2.getY() + 15));
-                                        System.out.println(BLUE + "DELTA: " + deltaX + ", " + deltaY + RESET);
-
+                                    bullet.setLayoutX(bullet.getLayoutX() - deltaX);
+                                    bullet.setLayoutY(bullet.getLayoutY() - deltaY);
+//                                        System.out.println("bullet position: " + bullet.getLayoutX() + ", " + bullet.getLayoutY());
+//                                        System.out.println("player2 position: " + player2.getX() + ", " + player2.getY());
+//                                        System.out.println("SHOOTING AREA X: " + (player2.getX() + AVATAR_BATTLEFIELD_SIZE - 15) + ", " + (player2.getX() + 15));
+//                                        System.out.println("SHOOTING AREA Y: " + (player2.getY() + AVATAR_BATTLEFIELD_SIZE - 15) + ", " + (player2.getY() + 15));
+//                                        System.out.println(BLUE + "DELTA: " + deltaX + ", " + deltaY + RESET);
 //                                        if (bullet.getLayoutX() <= player2.getX() + AVATAR_BATTLEFIELD_SIZE && bullet.getLayoutX() >= player2.getX() && bullet.getLayoutY() <= player2.getY() + AVATAR_BATTLEFIELD_SIZE && bullet.getLayoutY() >= player2.getY()) {
-                                        if (isOpponentHit(bullet, player2)) {
-                                            System.out.print(RED + " --------------- BOOM ----------- \n" + RESET);
 
+                                    if (isOpponentHit(bullet, player2)) {
+
+                                        ///////////////////////////////////////////// START - do metody aktualizacji życia
+                                        if (opponent.getHealth()  == 1){
+                                            soundEffectOnDeath(opponent);
+                                            opponent.reduceHealth();
+                                            System.out.println(opponent.getNick() + " health = " + opponent.getHealth());
+                                            System.out.println(BLUE + player.getNick() + " has won the game !!!  .... and " + opponent.getNick() + " lose" + RESET);
                                             root.getChildren().remove(bullet);
-                                            explode.setLayoutX(bullet.getLayoutX() - 12);
-                                            explode.setLayoutY(bullet.getLayoutY() - 12);
-                                            root.getChildren().add(explode);
-                                            explodeTransition.play();
+
+                                            
+                                            root.getScene().removeEventFilter(KeyEvent.KEY_PRESSED, eventHandlerFirstMove);
+                                            root.getScene().removeEventFilter(KeyEvent.KEY_PRESSED, eventHandlerSecondMove);
+                                            root.getScene().removeEventFilter(KeyEvent.KEY_PRESSED, eventHandlerFirstShot);
+                                            root.getScene().removeEventFilter(KeyEvent.KEY_PRESSED, eventHandlerSecondShot);
+//                                            root.getChildren().remove(player.getOnTheBattlefield());
+//                                            root.getChildren().remove(opponent.getOnTheBattlefield());
+
+
+//                                            Rectangle rectangle = new Rectangle(BATTLEFIELD_WIDTH, BATTLEFIELD_HEIGHT);
+//                                            rectangle.setFill(Color.BLUE);
+//                                            rectangle.setLayoutX(200);
+//                                            rectangle.setLayoutY(100);
+////                                            root.getChildren().add(rectangle);
+//
+//                                            Label label = new Label(player.getNick() + " has won the game... CONGRATULATIONS !!!");
+//                                            label.setTextFill(Color.WHITE);
+//                                            label.setLayoutX(200);
+//                                            label.setLayoutY(100);
+//                                            root.getChildren().add(label);
+
+//                                            Label whoWon = new Label(player.getNick() + " has won the game !!! .... CONGRATULATIONS !!!");
+//                                            whoWon.setTextFill(Color.WHITE);
+//                                            root.getChildren().add(whoWon);
+//                                            GridPane.setValignment(whoWon, VPos.CENTER);
+//                                            GridPane.setHalignment(whoWon, HPos.CENTER);
+//                                            whoWon.setAlignment(Pos.CENTER);
+//                                            whoWon.setVisible(true);
+
+                                            player.increaseWins();
+                                            opponent.increaseLoses();
+
+                                            System.out.println("STATISTICS - " + player.getNick() + ": has " +player.getWins() +" wins and " + player.getLoses() + " loses");
+                                            System.out.println("STATISTICS - " + opponent.getNick() + ": has " +opponent.getWins() +" wins and " + opponent.getLoses() + " loses");
+
                                             timeline.stop();
+
+                                            try {
+                                                player.setJustWon(true);
+                                                Game.setRoot("end",WELCOME_WIDTH+15, WELCOME_HEIGHT+35);
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                            return;
                                         }
 
+                                        System.out.println(RED + opponent.getNick() + " was hit... ała !!! " + RESET);
+                                        soundEffectOnHit(opponent);
+                                        opponent.reduceHealth();
+                                        System.out.println(opponent.getNick() + " health = " + opponent.getHealth());
+
+//                                                removeNodeIfExists(player.getOnTheBattlefield());
+//                                                removeNodeIfExists(opponent.getOnTheBattlefield());
+//                                                removeNodeIfExists(bullet);
+//                                                removeNodeIfExists(explode);
+//                                                root.getChildren().remove(player.getOnTheBattlefield());
+//                                                root.getChildren().remove(opponent.getOnTheBattlefield());
+//                                                player.getOnTheBattlefield().removeEventFilter(KeyEvent.KEY_PRESSED, eventHandlerS);
+//                                                opponent.getOnTheBattlefield().removeEventFilter(KeyEvent.KEY_PRESSED, eventHandlerF);
+//                                                opponent.getOnTheBattlefield().removeEventFilter(KeyEvent.KEY_PRESSED, eventHandlerS);
+
+//                                                player.getOnTheBattlefield().sceneProperty().get;
+
+//                                                imageViewPlayerFirst.sceneProperty().addListener((obs, oldScene, newScene) -> {
+//                                                    newScene.addEventFilter(KeyEvent.KEY_PRESSED, warriorsMovement(Game.playerGlobalFirst, KeyCode.W, KeyCode.S, KeyCode.A, KeyCode.D));
+//                                                    newScene.addEventFilter(KeyEvent.KEY_PRESSED, warriorsShoot(Game.playerGlobalFirst, KeyCode.X, bulletFirst));
+//                                                });
+
+//                                                player.getOnTheBattlefield().removeEventFilter(KeyEvent.KEY_PRESSED,this);
+//                                                Game.setRoot("welcome",WELCOME_WIDTH+15, WELCOME_HEIGHT+35);
+
+                                        //////////////////////////////////////////// END - do metody aktualizacji życia
+
+                                        root.getChildren().remove(bullet);
+                                        explode.setLayoutX(bullet.getLayoutX() - 12);
+                                        explode.setLayoutY(bullet.getLayoutY() - 12);
+                                        root.getChildren().add(explode);
+                                        explodeTransition.play();
+//                                            root.getChildren().remove(explode);
+                                        timeline.stop();
                                     }
+
                                 })
                 );
 
@@ -366,8 +451,6 @@ public class RootController implements Initializable {
 
                 timeline.setCycleCount((int) SHOT_DURATION);
                 timeline.play();
-
-                System.out.println(player1.getImage() + " SHOT towards " + player2.getImage());
             }
         };
 
@@ -377,6 +460,33 @@ public class RootController implements Initializable {
     private boolean isOpponentHit(ImageView bullet, ImageView player2) {
         return bullet.getLayoutX() <= player2.getX() + AVATAR_BATTLEFIELD_SIZE && bullet.getLayoutX() >= player2.getX() &&
                 bullet.getLayoutY() <= player2.getY() + AVATAR_BATTLEFIELD_SIZE && bullet.getLayoutY() >= player2.getY();
+    }
+
+    private void removeNodeIfExists(Node node) {
+        if (root.getChildren().contains(node)) {
+            root.getChildren().remove(node);
+
+        }
+    }
+
+    private boolean isMonster(Player player) {
+        return player.getRace().equals(Race.MONSTERS);
+    }
+
+    private void soundEffectOnHit(Player player) {
+        if (isMonster(player)) {
+            mediaPlayer("src/main/resources/pl/rav/graphics/avatars/monsters/hitMonster.mp3").play();
+        } else {
+            mediaPlayer("src/main/resources/pl/rav/graphics/avatars/humans/hitHuman.mp3").play();
+        }
+    }
+
+    private void soundEffectOnDeath(Player player) {
+        if (isMonster(player)) {
+            mediaPlayer("src/main/resources/pl/rav/graphics/avatars/monsters/deathMonster.mp3").play();
+        } else {
+            mediaPlayer("src/main/resources/pl/rav/graphics/avatars/humans/deathHuman.mp3").play();
+        }
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -399,29 +509,28 @@ public class RootController implements Initializable {
 
     /////////////////////////////////////////////////////
 
-    private MediaPlayer soundEffect(String path) {
+    private MediaPlayer mediaPlayer(String path) {
         Media media = new Media(new File(path).toURI().toString());
-        MediaPlayer player = new MediaPlayer(media);
-        return player;
+        return new MediaPlayer(media);
     }
 
-    private ImageView createGraphicsFromPath(String path, int width) {
-        try (InputStream inputStream = new FileInputStream(path)) {
-            return createGraphicsFromInputStream(inputStream, width);
-        } catch (IOException e) {
-            System.err.println("Cannot load image exception: " + e.getMessage());
-            return null;
-        }
-    }
-
-    private ImageView createGraphicsFromInputStream(InputStream inputStream, int width) {
-        Image image = new Image(inputStream);
-        ImageView imageView = new ImageView(image);
-        imageView.setVisible(true);
-        imageView.setPreserveRatio(true);
-        imageView.setFitWidth(width);
-        return imageView;
-    }
+//    private ImageView createGraphicsFromPath(String path, int width) {
+//        try (InputStream inputStream = new FileInputStream(path)) {
+//            return createGraphicsFromInputStream(inputStream, width);
+//        } catch (IOException e) {
+//            System.err.println("Cannot load image exception: " + e.getMessage());
+//            return null;
+//        }
+//    }
+//
+//    private ImageView createGraphicsFromInputStream(InputStream inputStream, int width) {
+//        Image image = new Image(inputStream);
+//        ImageView imageView = new ImageView(image);
+//        imageView.setVisible(true);
+//        imageView.setPreserveRatio(true);
+//        imageView.setFitWidth(width);
+//        return imageView;
+//    }
 
 //    EventHandler<KeyEvent> keyPressListener = keyEvent -> {
 //        switch (keyEvent.getCode()) {
