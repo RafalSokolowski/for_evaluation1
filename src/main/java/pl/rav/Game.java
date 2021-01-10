@@ -24,7 +24,7 @@ public class Game extends Application {
     public void start(Stage stage) throws IOException {
 
         scene = new Scene(loadFXML("root"), MAIN_APP_WIDTH, MAIN_APP_HEIGHT); // !!! - do uzytku na czas setup batt;efield
-//        scene = new Scene(loadFXML("welcome"), WELCOME_WIDTH, WELCOME_HEIGHT); // !!! - wyłączone na czas setup battlefield - !!!!
+//        scene = new Scene(loadFXML("welcome"), WELCOME_WIDTH, WELCOME_HEIGHT); // !!! TODO: - wyłączone na czas setup battlefield - !!!!
 
         stage.setTitle("simple mini strategy game");
         stage.setScene(scene);
