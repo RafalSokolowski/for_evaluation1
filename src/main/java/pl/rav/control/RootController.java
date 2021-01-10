@@ -41,7 +41,6 @@ import static pl.rav.util.Const.*;
 
 public class RootController implements Initializable {
 
-    // SETUP - phase
     @FXML
     private BorderPane root;
     @FXML
@@ -53,10 +52,6 @@ public class RootController implements Initializable {
     @FXML
     private ImageView avatarLeft, avatarRight;
 
-    // BATTLE - phase
-    @FXML
-    private GridPane battlefield;
-
     EventHandler<KeyEvent> eventHandlerFirstMove;
     EventHandler<KeyEvent> eventHandlerSecondMove;
     EventHandler<KeyEvent> eventHandlerFirstShot;
@@ -67,15 +62,8 @@ public class RootController implements Initializable {
     private Stage endStage;
     private Stage currentStage;
 
-    private List<ImageView> rocketsFirstPlayer;
-
-    // SETUP - adding players parameters on LEFT and RIGHT and info on TOP
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-// TODO: !!! - wyłączone na czas setup battlefield - !!!!
-
         setPlayerVsPlayer();
         setTurn();
 
@@ -84,21 +72,14 @@ public class RootController implements Initializable {
         setRace(raceLeft, Game.playerGlobalFirst);
         setWinsAndLoses(winsLeft, Game.playerGlobalFirst, Game.playerGlobalFirst.getWins());
         setWinsAndLoses(losesLeft, Game.playerGlobalFirst, Game.playerGlobalFirst.getLoses());
-//        setMoves(leftMoves, "0");
 
         setAvatarLeft(avatarRight, Game.playerGlobalSecond);
         setNick(nickRight, Game.playerGlobalSecond);
         setRace(raceRight, Game.playerGlobalSecond);
         setWinsAndLoses(winsRight, Game.playerGlobalSecond, Game.playerGlobalSecond.getWins());
         setWinsAndLoses(losesRight, Game.playerGlobalSecond, Game.playerGlobalSecond.getLoses());
-//        setMoves(rightMoves, "0");
-
-// TODO: !!! - wyłączone na czas setup battlefield - !!!!
 
         graphics = new Graphics();
-
-//        Game.playerGlobalFirst = new Player("Ksawery", Race.HUMANS, Avatar.HEAVY_GUY);        // TODO: !!! - wyłączone TYLKO na czas setup battlefield - !!!!
-//        Game.playerGlobalSecond = new Player("Rafal", Race.MONSTERS, Avatar.MEDIUM_MONSTER);  // TODO: !!! - wyłączone TYLKO na czas setup battlefield - !!!!
 
         ImageView imageViewPlayerFirst = placedWarriorOnTheBattlefield(
                 Game.playerGlobalFirst.getAvatar().getPath(),
@@ -113,7 +94,6 @@ public class RootController implements Initializable {
 
         Game.playerGlobalFirst.setOnTheBattlefield(imageViewPlayerFirst);
         Game.playerGlobalSecond.setOnTheBattlefield(imageViewPlayerSecond);
-
 
         ImageView bulletFirst = graphics.createGraphicsFromPath(BULLET_PATH, BULLET_WIDTH);
         eventHandlerFirstMove = warriorsMovement(Game.playerGlobalFirst, KeyCode.W, KeyCode.S, KeyCode.A, KeyCode.D);
@@ -132,7 +112,6 @@ public class RootController implements Initializable {
             newScene.addEventFilter(KeyEvent.KEY_PRESSED, eventHandlerSecondMove);
             newScene.addEventFilter(KeyEvent.KEY_PRESSED, eventHandlerSecondShot);
         });
-
     }
 
     private void setPlayerVsPlayer() {
@@ -156,7 +135,7 @@ public class RootController implements Initializable {
             where.setPreserveRatio(true);
             where.setFitHeight(AVATAR_MENU_SIZE);
         } catch (IOException e) {
-            System.err.println("Cannot load image exception (Class RootController): " + e.getMessage());
+            System.err.println("Cannot load image exception: " + e.getMessage());
         }
     }
 
@@ -170,52 +149,37 @@ public class RootController implements Initializable {
         leftOrRightSide.setStyle("-fx-font-weight: bold");
     }
 
-//    private void setMoves(Label leftOrRightSide, String moves) {
-//        leftOrRightSide.setText(moves);
-//        leftOrRightSide.setStyle("-fx-font-weight: bold");
-//    }
-
-    //////////////////////////////////////////////// BATTLEFIELD - setup //////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////// BATTLEFIELD - setup ///////////////////////////////////////////////
 
     public void goToTheBattle() {
         root.getChildren().add(Game.playerGlobalFirst.getOnTheBattlefield());
         root.getChildren().add(Game.playerGlobalSecond.getOnTheBattlefield());
-
-
-//        System.out.println("x: " + imageViewPlayerFirst.getX());
-//        System.out.println("y: " + imageViewPlayerFirst.getY());
-//        System.out.println("height: " + imageViewPlayerFirst.getFitHeight());
-//        System.out.println("width:  " + imageViewPlayerFirst.getFitWidth());
-//        System.out.println("BATTLEFIELD_START_Y:  " + BATTLEFIELD_START_Y);
-//        System.out.println("BATTLEFIELD_END_Y:  " + BATTLEFIELD_END_Y);
     }
 
     private ImageView placedWarriorOnTheBattlefield(String avatarPath, double startX, double startY) {
-
         try (InputStream inputStream = new FileInputStream(avatarPath)) {
             Image image = new Image(inputStream);
             ImageView imageView = new ImageView(image);
             imageView.setVisible(true);
-//            imageView.setPreserveRatio(true); // utrzymuje oryginalny współczynnik przy rskalowaniu i nie da się zrobić kwadratu 50 x 50 : )
             imageView.setFitHeight(AVATAR_BATTLEFIELD_SIZE);
             imageView.setFitWidth(AVATAR_BATTLEFIELD_SIZE);
-//            imageView.setLayoutX(BATTLEFIELD_START_X);
-//            imageView.setLayoutY(BATTLEFIELD_START_Y);
             imageView.setX(startX);
             imageView.setY(startY);
             return imageView;
         } catch (IOException e) {
-            System.err.println("Cannot load image exception (Class RootController): " + e.getMessage());
+            System.err.println("Cannot load image exception: " + e.getMessage());
         }
-
         return null;
-
     }
 
-    /////////////////////////////////////////////// MOVEMENT /////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////// MOVEMENT management ////////////////////////////////////////////////
 
-    private EventHandler<KeyEvent> warriorsMovement(Player player, KeyCode moveUp, KeyCode moveDown, KeyCode moveLeft, KeyCode moveRight) {
-
+    private EventHandler<KeyEvent> warriorsMovement(
+            Player player,
+            KeyCode moveUp,
+            KeyCode moveDown,
+            KeyCode moveLeft,
+            KeyCode moveRight) {
         ImageView player1 = player.getOnTheBattlefield();
         ImageView player2 = getOpponent(player).getOnTheBattlefield();
 
@@ -223,14 +187,8 @@ public class RootController implements Initializable {
             if (keyEvent.getCode() == moveUp) {
                 if (player1.getY() > BATTLEFIELD_START_Y) {
                     if ((int) player1.getX() == player2.getX() && (int) player1.getY() == (int) player2.getY() + AVATAR_BATTLEFIELD_SIZE) {
-                        System.err.println("coordinates player1: x=" + player1.getX() + ", y=" + player1.getY());
-                        System.err.println("coordinates player2: x=" + player2.getX() + ", y=" + player2.getY());
                     } else {
                         player1.setY(player1.getY() - AVATAR_BATTLEFIELD_SIZE);
-
-                        System.out.println("coordinates player1: x=" + player1.getX() + ", y=" + player1.getY());
-                        System.out.println("coordinates player2: x=" + player2.getX() + ", y=" + player2.getY());
-                        System.out.println();
                     }
                 }
             }
@@ -241,9 +199,6 @@ public class RootController implements Initializable {
                         System.err.println("coordinates player2: x=" + player2.getX() + ", y=" + player2.getY());
                     } else {
                         player1.setX((int) player1.getX() - AVATAR_BATTLEFIELD_SIZE);
-                        System.out.println("coordinates player1: x=" + player1.getX() + ", y=" + player1.getY());
-                        System.out.println("coordinates player2: x=" + player2.getX() + ", y=" + player2.getY());
-                        System.out.println();
                     }
                 }
             }
@@ -254,9 +209,6 @@ public class RootController implements Initializable {
                         System.err.println("coordinates player2: x=" + player2.getX() + ", y=" + player2.getY());
                     } else {
                         player1.setX(player1.getX() + AVATAR_BATTLEFIELD_SIZE);
-                        System.out.println("coordinates player1: x=" + player1.getX() + ", y=" + player1.getY());
-                        System.out.println("coordinates player2: x=" + player2.getX() + ", y=" + player2.getY());
-                        System.out.println();
                     }
                 }
             }
@@ -267,10 +219,6 @@ public class RootController implements Initializable {
                         System.err.println("coordinates player2: x=" + player2.getX() + ", y=" + player2.getY());
                     } else {
                         player1.setY(player1.getY() + AVATAR_BATTLEFIELD_SIZE);
-//                        incrementMoves(leftMoves);                                     //TODO: !!! - wyłączone na czas setup battlefield - !!!!
-                        System.out.println("coordinates player1: x=" + player1.getX() + ", y=" + player1.getY());
-                        System.out.println("coordinates player2: x=" + player2.getX() + ", y=" + player2.getY());
-                        System.out.println();
                     }
                 }
             }
@@ -282,9 +230,12 @@ public class RootController implements Initializable {
         return player.equals(Game.playerGlobalFirst) ? Game.playerGlobalSecond : Game.playerGlobalFirst;
     }
 
-    /////////////////////////////////////////////// SHOT //////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////// SHOT management ////////////////////////////////////////////////////
 
-    private EventHandler<KeyEvent> warriorsShoot(Player player, KeyCode shot, ImageView bullet) {
+    private EventHandler<KeyEvent> warriorsShoot(
+            Player player,
+            KeyCode shot,
+            ImageView bullet) {
 
         ImageView player1 = player.getOnTheBattlefield();
         Player opponent = getOpponent(player);
@@ -292,8 +243,6 @@ public class RootController implements Initializable {
 
         EventHandler<KeyEvent> keyShootListener = keyEvent -> {
             if (keyEvent.getCode() == shot && !root.getChildren().contains(bullet)) {
-
-                System.out.println(player.getNick() + " SHOT towards " + opponent.getNick());
 
                 mediaPlayer(SHOT_SOUND).play();
 
@@ -343,13 +292,9 @@ public class RootController implements Initializable {
                                     bullet.setLayoutY(bullet.getLayoutY() - deltaY);
 
                                     if (isOpponentHit(bullet, player2)) {
-
-                                        ///////////////////////////////////////////// START - do metody aktualizacji życia
                                         if (opponent.getHealth() == 1) {
                                             soundEffectOnDeath(opponent);
                                             opponent.reduceHealth();
-                                            System.out.println(opponent.getNick() + " health = " + opponent.getHealth());
-                                            System.out.println(BLUE + player.getNick() + " has won the game !!!  .... and " + opponent.getNick() + " lose" + RESET);
                                             root.getChildren().remove(bullet);
 
                                             root.getScene().removeEventFilter(KeyEvent.KEY_PRESSED, eventHandlerFirstMove);
@@ -368,19 +313,14 @@ public class RootController implements Initializable {
                                             return;
                                         }
 
-                                        System.out.println(RED + opponent.getNick() + " was hit... ała !!! " + RESET);
                                         soundEffectOnHit(opponent);
                                         opponent.reduceHealth();
-                                        System.out.println(opponent.getNick() + " health = " + opponent.getHealth());
-
-                                        //////////////////////////////////////////// END - do metody aktualizacji życia
 
                                         root.getChildren().remove(bullet);
                                         explode.setLayoutX(bullet.getLayoutX() - 12);
                                         explode.setLayoutY(bullet.getLayoutY() - 12);
                                         root.getChildren().add(explode);
                                         explodeTransition.play();
-//                                            root.getChildren().remove(explode);
                                         timeline.stop();
                                     }
                                 })
@@ -409,30 +349,23 @@ public class RootController implements Initializable {
                 bullet.getLayoutY() <= player2.getY() + AVATAR_BATTLEFIELD_SIZE && bullet.getLayoutY() >= player2.getY();
     }
 
-    private void removeNodeIfExists(Node node) {
-        if (root.getChildren().contains(node)) {
-            root.getChildren().remove(node);
-
-        }
-    }
-
     private boolean isMonster(Player player) {
         return player.getRace().equals(Race.MONSTERS);
     }
 
     private void soundEffectOnHit(Player player) {
         if (isMonster(player)) {
-            mediaPlayer("src/main/resources/pl/rav/graphics/avatars/monsters/hitMonster.mp3").play();
+            mediaPlayer(HIT_MONSTER_SOUND).play();
         } else {
-            mediaPlayer("src/main/resources/pl/rav/graphics/avatars/humans/hitHuman.mp3").play();
+            mediaPlayer(HIT_HUMAN_SOUND).play();
         }
     }
 
     private void soundEffectOnDeath(Player player) {
         if (isMonster(player)) {
-            mediaPlayer("src/main/resources/pl/rav/graphics/avatars/monsters/deathMonster.mp3").play();
+            mediaPlayer(DEATH_MONSTER_SOUND).play();
         } else {
-            mediaPlayer("src/main/resources/pl/rav/graphics/avatars/humans/deathHuman.mp3").play();
+            mediaPlayer(DEATH_HUMAN_SOUND).play();
         }
     }
 
@@ -454,26 +387,6 @@ public class RootController implements Initializable {
 
         currentStage.hide();
     }
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    private void incrementMoves(Label playerMoves) {
-        int currentMoves = Integer.parseInt(playerMoves.getText());
-        String incrementedMove = String.valueOf(++currentMoves);
-        playerMoves.setText(incrementedMove);
-    }
-
-    private boolean areNotPlayersOverlapping(ImageView player1, ImageView player2) {
-//        if (player1.getX() != player2.getX() - AVATAR_BATTLEFIELD_SIZE && player1.getY() != player2.getY() - AVATAR_BATTLEFIELD_SIZE) {
-        if (player1.getX() < player2.getX() - AVATAR_BATTLEFIELD_SIZE) {
-            return true;
-        }
-
-        return false;
-    }
-
-
-    /////////////////////////////////////////////////////
 
     private MediaPlayer mediaPlayer(String path) {
         Media media = new Media(new File(path).toURI().toString());

@@ -45,7 +45,6 @@ public class WelcomeController {
     public void avatarSelected(ActionEvent actionEvent) {
         avatarButtonPressed = actionEvent.getSource().toString();
         moveFurtherButton.setVisible(true);
-//        System.out.println(generateAvatarNameFromString(avatarButtonPressed));
     }
 
     public void moveFurther() throws IOException {
@@ -56,8 +55,7 @@ public class WelcomeController {
             playerNick = nick.getText();
             playerAvatar = generateAvatarNameFromString(avatarButtonPressed);
             Game.playerGlobalFirst = new Player(playerNick, playerRace, Avatar.valueOf(playerAvatar));
-            Game.setRoot("welcome",WELCOME_WIDTH+15, WELCOME_HEIGHT+35);    // TODO: nie wiem dlaczego musze przesunąć o te współrzędne ręcznie (?)
-//            Game.setRoot("welcome",WELCOME_WIDTH, WELCOME_HEIGHT);
+            Game.setRoot("welcome", WELCOME_WIDTH + 15, WELCOME_HEIGHT + 35);
 
         } else if (Game.playerGlobalSecond == null) {
             playerNick = nick.getText();

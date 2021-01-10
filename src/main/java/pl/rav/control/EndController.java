@@ -29,50 +29,16 @@ public class EndController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        Graphics graphics = new Graphics();
-
-        ColumnConstraints columnConstraints = new ColumnConstraints();
-        columnConstraints.setHalignment(HPos.CENTER);
-        end.getColumnConstraints().add(columnConstraints);
-
-        RowConstraints rowConstraints = new RowConstraints ();
-        rowConstraints.setValignment(VPos.CENTER);
-        end.getRowConstraints().add(rowConstraints);
-
-        Label statisticsWin, statisticsLose;
-
         if (Game.playerGlobalFirst.isJustWon()) {
-//            nickWon.setText(Game.playerGlobalFirst.getNick() + " has won");
-//            nickWon.setStyle("-fx-font: 30px Tohoma; -fx-font-weight: bold;");
-//            end.add(graphics.createGraphicsFromPath(Game.playerGlobalFirst.getAvatar().getPath(), AVATAR_MENU_SIZE),0,1);
-//            statisticsWin = new Label("Wins: " + Game.playerGlobalFirst.getWins() + ",    Loses: " + Game.playerGlobalFirst.getLoses());
-//            statisticsWin.setStyle("-fx-font: 15px Tohoma; -fx-font-weight: bold;");
-//            end.add(statisticsWin,1,1);
-//
-//            nickLose.setText(Game.playerGlobalSecond.getNick() +  " has lose");
-//            nickLose.setStyle("-fx-font: 30px Tohoma; -fx-font-weight: bold;");
-//            end.add(graphics.createGraphicsFromPath(Game.playerGlobalSecond.getAvatar().getPath(), AVATAR_MENU_SIZE),0,3);
-//            statisticsLose = new Label("Wins: " + Game.playerGlobalSecond.getWins() + ",    Loses: " + Game.playerGlobalSecond.getLoses());
-//            statisticsLose.setStyle("-fx-font: 15px Tohoma; -fx-font-weight: bold;");
-//            end.add(statisticsLose,1,3);
             setData(Game.playerGlobalFirst);
-
         } else {
             setData(Game.playerGlobalSecond);
-//            nickWon.setText(Game.playerGlobalSecond.getNick() + " has won");
-//            nickWon.setStyle("-fx-font: 30px Tohoma; -fx-font-weight: bold;");
-//            end.add(graphics.createGraphicsFromPath(Game.playerGlobalSecond.getAvatar().getPath(), AVATAR_MENU_SIZE),0,1);
-//            nickLose.setText(Game.playerGlobalFirst.getNick() + " has lose");
-//            nickLose.setStyle("-fx-font: 15px Tohoma; -fx-font-weight: bold;");
-//            end.add(graphics.createGraphicsFromPath(Game.playerGlobalFirst.getAvatar().getPath(), AVATAR_MENU_SIZE),0,3);
         }
 
         Game.playerGlobalFirst.setJustWon(false);
         Game.playerGlobalSecond.setJustWon(false);
-
         Game.playerGlobalFirst.resetHealth();
         Game.playerGlobalSecond.resetHealth();
-
     }
 
     public void playAgain() throws IOException {
@@ -113,6 +79,5 @@ public class EndController implements Initializable {
     private Player getOpponent (Player player) {
         return player.equals(Game.playerGlobalFirst) ? Game.playerGlobalSecond : Game.playerGlobalFirst;
     }
-
 
 }

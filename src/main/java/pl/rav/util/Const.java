@@ -41,10 +41,14 @@ public class Const {
     public static final String RESET = "\u001B[0m";
 
     public static final String INITIAL_POINTS = "0";
-    public static final int INITIAL_HEALTH = 2;
+    public static final int INITIAL_HEALTH = 5;
 
     // SOUNDS
     public static final String SHOT_SOUND = "src/main/resources/pl/rav/graphics/bullets/bulletSound01.mp3";
+    public static final String HIT_MONSTER_SOUND = "src/main/resources/pl/rav/graphics/avatars/monsters/hitMonster.mp3";
+    public static final String HIT_HUMAN_SOUND = "src/main/resources/pl/rav/graphics/avatars/humans/hitHuman.mp3";
+    public static final String DEATH_MONSTER_SOUND = "src/main/resources/pl/rav/graphics/avatars/monsters/deathMonster.mp3";
+    public static final String DEATH_HUMAN_SOUND = "src/main/resources/pl/rav/graphics/avatars/humans/deathHuman.mp3";
 
     // GRAPHICS
     public static final String BULLET_PATH = "src/main/resources/pl/rav/graphics/bullets/bullet01.png";
