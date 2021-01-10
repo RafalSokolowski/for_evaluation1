@@ -15,7 +15,7 @@ public class Const {
     public static final int MENU_TOP_SIZE = 100;
     public static final int MENU_BOTTOM_SIZE = 100;
 
-    public static final int AVATAR_BATTLEFIELD_SIZE = 50;
+    public static final double AVATAR_BATTLEFIELD_SIZE = 50.0;
     public static final int AVATAR_MENU_HEIGHT = 80;
 
     public static final int BULLET_HEIGHT = 30;
@@ -23,7 +23,7 @@ public class Const {
     public static final int BULLET_RANGE = 300;
     public static final int EXPLODE_WIDTH = 40;
 
-    public static final int SHOT_DURATION = 1000;
+    public static final double SHOT_DURATION = 300.0;
 
 
     public static final int BATTLEFIELD_START_X = MENU_LEFT_RIGHT_SIZE;
@@ -39,5 +39,12 @@ public class Const {
     public static final String RESET = "\u001B[0m";
 
     public static final String INITIAL_POINTS = "0";
+
+    // SOUNDS
+    public static final String SHOT_SOUND = "src/main/resources/pl/rav/graphics/bullets/bulletSound01.mp3";
+
+    // GRAPHICS
+    public static final String BULLET_PATH = "src/main/resources/pl/rav/graphics/bullets/bullet01.png";
+    public static final String EXPLODE_PATH = "src/main/resources/pl/rav/graphics/explode/explode02.png";
 
 }
